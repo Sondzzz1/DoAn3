@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quên mật khẩu - Lanvu Gallery</title>
+    <link rel="stylesheet" href="./assets/css/DangNhap.css">
+    <link rel="stylesheet" href="./assets/css/QuenMatKhau.css">
+    <script src="./assets/js/common.js" defer></script>
+    <script src="./assets/js/cart.js" defer></script>
+    <script src="./assets/js/auth.js" defer></script>
+    <link rel="stylesheet" href="./icon/fonts/themify-icons/themify-icons.css">
+</head>
+<body>
+    <div class="ontop">
+        <span class="ontop1">CONTACT | Thứ 2-CN: 08H00 - 21H00 | 0948883535 - 0948863535</span>
+    </div>
+    <div id="main">
+        <div id="header">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="./assets/TrangNgoai/logo1.png" alt="Ảnh logo đấy baby">
+                </a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="ti-menu"></i>
+            </div>
+            <ul id="nav">
+                <li><a href="index.html">TRANG CHỦ</a></li>
+                <li>
+                    <a href="">GIỚI THIỆU</a>
+                    <ul class="subnav">
+                        <li><a href="">Nhà sáng lập - Họa sĩ, kiến trúc sư <br/> Lan Vũ </a> </li>
+                        <li><a href="">Về chúng tôi</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">TÁC PHẨM</a>
+                    <ul class="subnav">
+                        <li><a href="TranhSonDau.html">Tranh sơn dầu</a></li>
+                        <li><a href="TranhCoDien.html">Tranh cổ điển </a></li>
+                        <li><a href="TranhSonMai.html">Tranh sơn mài</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">HỌA SĨ</a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="">Họa sĩ Sơn dầu</a>
+                            <ul class="subnav1">
+                                <li><a href="HoaSiLanVu.html">Lân Vũ</a></li>
+                                <li><a href="">Đoàn Hòa</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ Sơn mài</a>
+                            <ul class="subnav1">
+                                <li><a href="">Lý Trực Sơn</a></li>
+                                <li><a href="">Lê Văn Thìn</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ màu nước</a>
+                            <ul class="subnav1">
+                                <li><a href="">Phan Vũ Tuấn</a></li>
+                            </ul>
+                        </li>
+                    </ul>          
+                </li>
+                <li>
+                    <a href="">DỊCH VỤ</a>
+                    <ul class="subnav">
+                        <li><a href="ThietKeTaiNha.html">Tư vấn thiết kế tại nhà</a></li>
+                        <li><a href="">Vẽ tranh theo yêu cầu</a></li>
+                    </ul>
+                </li>
+                <li><a href="">TIN TỨC</a></li>
+                <li><a href="">LIÊN HỆ</a></li>
+                <div class="header-icons">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Nhập từ khóa...">      
+                            <i class="ti-search"></i>      
+                            <div id="homeSearchResults" class="search-dropdown"></div>
+                        </div>
+                    </div>
+                    <a href="DangKi.html" id="userLink" class="user-link">
+                        <i class="ti-user"></i>
+                    </a>
+                    <a href="GioHang.html">                  
+                        <div class="cart">
+                            <i class="ti-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </div>
+                    </a>
+                </div>                
+            </ul>
+        </div>
+    </div>
+    
+    <section class="forgot-password-section">
+        <div class="forgot-password-container">
+            <h2><i class="ti-lock"></i> Quên mật khẩu</h2>
+            <p>Nhập email đã đăng ký để lấy lại mật khẩu</p>
+            
+            <!-- Form bước 1: Nhập email -->
+            <form id="forgotPasswordForm" class="forgot-password-form">
+                <div class="form-group">
+                    <label for="forgotEmail">
+                        <i class="ti-email"></i> Email đăng ký
+                    </label>
+                    <input 
+                        type="email" 
+                        id="forgotEmail" 
+                        name="email" 
+                        placeholder="Nhập email của bạn..." 
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+                
+                <button type="submit" class="submit-button">
+                    <i class="ti-check"></i> Lấy lại mật khẩu
+                </button>
+                
+                <div class="form-links">
+                    <a href="DangNhap.html">
+                        <i class="ti-arrow-left"></i> Quay lại đăng nhập
+                    </a>
+                    <span>|</span>
+                    <a href="DangKi.html">Đăng ký tài khoản mới</a>
+                </div>
+            </form>
+            
+            <!-- Kết quả hiển thị mật khẩu -->
+            <div id="passwordResult" class="password-result hidden">
+                <div class="result-content">
+                    <i class="ti-check-box"></i>
+                    <h3>Mật khẩu của bạn</h3>
+                    <div class="password-display">
+                        <input type="text" id="displayPassword" readonly>
+                        <button type="button" id="copyPassword" class="copy-button" title="Sao chép mật khẩu">
+                            <i class="ti-files"></i>
+                        </button>
+                    </div>
+                    <p class="result-message">
+                        <i class="ti-info-alt"></i>
+                        Vui lòng lưu mật khẩu này ở nơi an toàn. Bạn có thể đổi mật khẩu sau khi đăng nhập.
+                    </p>
+                    <div class="result-actions">
+                        <a href="DangNhap.html" class="btn-login">
+                            <i class="ti-arrow-right"></i> Đăng nhập ngay
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Thông báo lỗi -->
+            <div id="errorMessage" class="error-message hidden">
+                <i class="ti-alert"></i>
+                <span id="errorText"></span>
+            </div>
+        </div>
+    </section>
+    
+    <div id="footer">
+        <div class="overlay">
+            <img src="./assets/TrangNgoai/Trung-Bay-2-01.jpg" alt="Hình ảnh triển lãm">
+            <div class="overlay-content">
+                <h2>Đăng ký email</h2>
+                <p>Để nhận tin nhắn thông tin và khuyến mãi từ chúng tôi</p>
+                <div class="email-form">
+                    <input type="email" placeholder="Your Email (required)">
+                    <button>Sign Up</button>
+                </div>
+            </div>
+    
+            <div class="footer-container">
+                <div class="footer-contact">
+                    <h3>LANVU GALLERY</h3>
+                    <p><i class="ti-location-pin"></i> 56 Nguyễn Phong Sắc, Dịch Vọng, Cầu Giấy, Hà Nội</p>
+                    <p><i class="ti-mobile"></i> 094 888 3535 - 094 886 3535</p>
+                    <p><i class="ti-email"></i> lanvugallery@gmail.com</p>
+                    <p><i class="ti-facebook"></i> <a href="#">facebook.com/lanvugallery123</a></p>
+                </div>
+    
+                <div class="footer-section">
+                    <h3>Hỗ trợ</h3>
+                    <ul>
+                        <li><a href="#">Tài khoản</a></li>
+                        <li><a href="#">Sản phẩm yêu thích</a></li>
+                        <li><a href="#">Giỏ hàng</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-section">
+                    <h3>Hướng dẫn</h3>
+                    <ul>
+                        <li><a href="#">Mua hàng và thanh toán</a></li>
+                        <li><a href="#">Chính sách đổi trả & lưu kho</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                        <li><a href="#">Chính sách giao hàng & vận chuyển</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-social">
+                    <h3>Fanpage</h3>
+                    <div class="fanpage-box">LanVu Gallery - 51,628 người theo dõi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

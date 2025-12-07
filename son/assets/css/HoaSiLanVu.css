@@ -1,0 +1,778 @@
+*{
+    margin:0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+.ontop {
+    background-color: rgb(251, 156, 5);
+    color: white;
+    padding: 9px 0;
+    font-size: 14px;
+    width: 100%;
+    position: fixed; /* Cố định ontop */
+    top: 0; /* Dính vào mép trên */
+    left: 0;
+    z-index: 1001;
+    
+}
+.ontop1{
+    padding: 0 100px;
+    width: 65%;
+    margin-left: 86px;
+}
+/* Đây là phần header phần đầu của giao diện chương trình */
+#header {
+    position: fixed;  
+    top: 35px; /* Đẩy header xuống dưới phần ontop */
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    padding: 0 0px;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
+    z-index: 1000; /* Đảm bảo header nằm dưới ontop */
+}
+#main {
+    padding-top: 100px; /* Điều chỉnh theo chiều cao của .ontop và #header */
+}
+/* Logo */
+.logo img {
+    height: 88px;
+    margin-left: 10px;
+    margin-left: 20px;
+}
+
+/* Thanh điều hướng */
+#nav {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+#nav li {
+    position: relative;
+}
+
+#nav > li {
+    margin-right: 30px;
+}
+
+#nav a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 15px;
+    font-size: 13.5px;
+    font-weight: bold;
+    display: block;
+}
+.ti-user {
+    cursor: pointer; /* Thay đổi con trỏ thành hình bàn tay */
+}
+.ti-shopping-cart{
+    cursor: pointer;
+}
+.header-icons i:hover {
+    color: orange; /* Chuyển sang màu cam */
+}
+#nav a:hover {
+    color: white;
+    background-color: #ff6f61;
+    border-radius: 5px;
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+/* --- 1. KHUNG TÌM KIẾM (SEARCH BAR) --- */
+.search-container {
+    position: relative;
+    margin-right: 15px; /* Cách các icon khác một chút */
+}
+
+.search-box {
+    position: relative;
+    display: flex;           /* Xếp input và icon nằm ngang */
+    align-items: center;     /* Căn giữa dọc */
+    background-color: #fff;  /* Nền trắng */
+    border: 1px solid #e0e0e0; /* Viền xám nhạt */
+    border-radius: 20px;     /* Bo tròn hình viên thuốc */
+    padding: 5px 15px;       /* Khoảng cách bên trong */
+    width: 260px;            /* Độ dài thanh tìm kiếm */
+    transition: all 0.3s ease;
+}
+
+/* Khi bấm vào thì viền sáng lên */
+.search-box:focus-within {
+    border-color: #f7931e;
+    box-shadow: 0 0 0 2px rgba(247, 147, 30, 0.1);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+    flex: 1; /* Chiếm hết khoảng trống */
+    padding-right: 10px;
+}
+
+.search-box .ti-search {
+    font-size: 16px;
+    color: #777;
+    cursor: pointer;
+}
+
+.search-box .ti-search:hover {
+    color: #f7931e;
+}
+
+/* --- 2. BẢNG KẾT QUẢ (DROPDOWN MÀU CAM) --- */
+#homeSearchResults {
+    position: absolute;
+    top: 130%; /* Đẩy xuống dưới thanh tìm kiếm 1 chút */
+    right: 0;
+    width: 320px; /* Rộng hơn thanh tìm kiếm để hiện đủ chữ */
+    background-color: #f7931e; /* MÀU CAM CHỦ ĐẠO */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 99999; /* Luôn nổi lên trên cùng */
+    display: none;  /* Mặc định ẩn */
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 5px 0;
+}
+
+/* Mũi tên tam giác nhỏ chỉ lên trên (trang trí) */
+#homeSearchResults::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    border-width: 0 8px 8px 8px;
+    border-style: solid;
+    border-color: transparent transparent #f7931e transparent;
+}
+
+#homeSearchResults.active {
+    display: block; /* Hiện ra khi có kết quả */
+}
+
+/* --- TỪNG DÒNG KẾT QUẢ --- */
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: background 0.2s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #d35400;
+}
+
+/* --- ẢNH SẢN PHẨM THẬT (Mới thêm) --- */
+.search-result-item .item-thumb {
+    width: 45px;        /* Chiều rộng ảnh */
+    height: 45px;       /* Chiều cao ảnh */
+    object-fit: cover;  /* Cắt ảnh vừa khung mà không bị méo */
+    border-radius: 4px; /* Bo góc nhẹ */
+    margin-right: 12px; /* Cách phần chữ ra */
+    background-color: #fff; /* Nền trắng phòng khi ảnh png trong suốt */
+    border: 1px solid rgba(255,255,255,0.3); /* Viền mờ xung quanh ảnh */
+}
+
+/* Thông tin chữ */
+.search-result-item .item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search-result-item .item-name {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.search-result-item .item-meta {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.highlight {
+    background-color: rgba(0,0,0,0.2);
+    color: #fff;
+    font-weight: bold;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.no-result {
+    padding: 15px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Subnav */
+.subnav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 296px;
+    list-style: none;
+    border-radius: 5px;
+}
+
+.subnav li {
+    width: 100%;
+}
+
+.subnav a {
+    color: #333;
+    padding: 12px;
+    display: block;
+}
+
+.subnav li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Hiển thị menu con khi hover */
+#nav li:hover .subnav {
+    display: block;
+}
+
+/* Subnav cấp 2 */
+.subnav1 {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.subnav li:hover .subnav1 {
+    display: block;
+}
+/* Định nghĩa chung cho toàn bộ trang */
+body {
+    font-family: Arial, sans-serif;        /* Chọn font chữ chính là Arial, nếu không có thì dùng sans-serif */
+    line-height: 1.6;                      /* Dãn dòng 1.6 giúp văn bản dễ đọc hơn */
+    background-color: #fff;                /* Màu nền trắng cho toàn trang */
+    margin: 0;                             /* Xóa khoảng trắng mặc định ngoài lề */
+    padding: 0;                            /* Xóa khoảng đệm mặc định bên trong */
+}
+
+/* Container chính chứa ảnh và thông tin */
+.container {
+    display: flex;                         /* Dùng Flexbox để sắp xếp nội dung ngang hàng */
+    flex-wrap: wrap;                       /* Cho phép các phần tử con xuống hàng nếu không đủ chỗ */
+    max-width: 1200px;                     /* Chiều rộng tối đa của khung là 1200px */
+    margin: 40px auto;                     /* Căn giữa container theo chiều ngang, cách trên/dưới 40px */
+    padding: 20px;                         /* Tạo khoảng đệm bên trong container */
+    gap: 30px;                             /* Khoảng cách giữa các phần tử con */
+}
+
+/* Khối chứa hình ảnh */
+.image-box {
+    flex: 1;                               /* Chiếm 1 phần tỉ lệ nhỏ hơn trong flex */
+    min-width: 300px;                      /* Đảm bảo chiều rộng tối thiểu */
+    max-width: 450px;                      /* Giới hạn chiều rộng tối đa để ảnh không quá lớn */
+}
+
+/* Ảnh bên trong khung hình */
+.image-box img {
+    width: 100%;                           /* Ảnh chiếm toàn bộ chiều rộng khung chứa */
+    height: auto;                          /* Tự động điều chỉnh chiều cao để giữ tỷ lệ */
+    border-radius: 8px;                    /* Bo góc ảnh nhẹ nhàng */
+}
+
+/* Khối chứa thông tin mô tả */
+.info-box {
+    flex: 2;                               /* Chiếm 2 phần tỉ lệ – lớn hơn phần ảnh */
+    min-width: 300px;                      /* Không nhỏ hơn 300px khi co nhỏ màn hình */
+    text-align: justify;                  /* Căn đều hai bên văn bản */
+}
+
+/* Định dạng các đoạn văn trong khối info */
+.info-box p {
+    margin-bottom: 15px;                  /* Tạo khoảng cách dưới mỗi đoạn văn */
+}
+
+/* Định dạng văn bản in đậm (strong) trong info */
+.info-box strong {
+    font-weight: bold;                    /* Làm đậm chữ để nhấn mạnh */
+}
+
+/* Định dạng tiêu đề cấp 2 (phần phụ đề) */
+h2 {
+    font-size: 1.5em;                      /* Kích thước chữ lớn hơn văn bản thường */
+    margin-top: 30px;                      /* Tạo khoảng cách phía trên tiêu đề */
+    color: #333;                           /* Màu chữ xám đậm, nhẹ nhàng hơn màu đen */
+}
+
+/* Khối cho phần sự nghiệp, hoạt động nghệ thuật, trích dẫn */
+.career-box,
+.activities-box,
+.quote-box {
+    max-width: 1000px;                     /* Giới hạn chiều rộng của mỗi khối */
+    margin: 30px auto;                     /* Căn giữa và tạo khoảng cách trên/dưới */
+    padding: 0 20px;                       /* Tạo khoảng đệm bên trái/phải để nội dung không sát lề */
+}
+
+/* Định dạng danh sách hoạt động nghệ thuật */
+.activities-box ul {
+    list-style: disc;                      /* Hiển thị kiểu danh sách là dấu chấm tròn */
+    padding-left: 20px;                    /* Thụt lề bên trái để danh sách rõ ràng hơn */
+}
+
+/* Khoảng cách giữa các mục trong danh sách */
+.activities-box li {
+    margin-bottom: 10px;                   /* Tạo khoảng cách giữa các mục */
+}
+
+/* Định dạng cho phần trích dẫn (blockquote) */
+blockquote {
+    font-style: italic;                    /* In nghiêng để tạo cảm giác trích dẫn */
+    color: #555;                           /* Màu chữ xám nhẹ */
+    margin: 20px 0;                        /* Khoảng cách trên/dưới khối trích dẫn */
+    border-left: 4px solid #ccc;           /* Viền trái màu xám nhạt để nhấn mạnh */
+    padding-left: 15px;                    /* Cách viền trái một chút để dễ đọc */
+    background-color: #f9f9f9;             /* Màu nền sáng nhẹ để làm nổi bật phần trích dẫn */
+    border-radius: 5px;                    /* Bo nhẹ góc để tạo cảm giác mềm mại */
+}
+
+#footer {
+    position: relative;
+    width: 100%;
+    height: 350px; /* Chiều cao được giảm để hài hòa hơn */
+}
+
+/* Overlay chứa cả ảnh nền và nội dung */
+.overlay {
+    position: relative;
+    width: 100%;
+    height: 450px; /* Chiều cao bằng toàn màn hình */
+    overflow: hidden;
+}
+
+/* Ảnh nền chiếm toàn bộ */
+.overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(60%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.overlay h2 {
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.overlay p {
+    margin-bottom: 20px;
+}
+/* Nội dung trong overlay */
+.overlay-content {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-align: center;
+    z-index: 2;
+}
+
+/* Form đăng ký email */
+.email-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.email-form input {
+    padding: 10px;
+    width: 250px;
+    border: none;
+    border-radius: 5px;
+}
+
+.email-form button {
+    padding: 10px 20px;
+    background: orange;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Footer-container nằm trong overlay */
+.footer-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 205px; /* 175px + 30px */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.7); /* Làm mờ để nhìn rõ chữ */
+    color: white;
+    z-index: 2;
+}
+.footer-container a {
+    color: white;  /* Đổi màu chữ về trắng */
+    text-decoration: none; /* Loại bỏ gạch chân */
+}
+/* Bố cục các phần trong footer */
+.footer-contact, .footer-section, .footer-social {
+    width: 24%;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.footer-contact h3, .footer-section h3, .footer-social h3 {
+    color: #ff6600;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+/* Fanpage box */
+.fanpage-box {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Thanh toán */
+.payment-icons span {
+    display: inline-block;
+    margin-right: 8px;
+    background: rgba(133, 127, 127, 0.3);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+.footer-contact i{
+    color:#ff6600 ;
+}
+@media only screen and (max-width: 767px) {
+    #nav {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        padding: 0;
+        background: white;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 999;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #nav.active {
+        display: flex;
+    }
+
+    #nav > li {
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+    }
+
+    #nav > li > a {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    #nav li.active .subnav {
+        display: block;
+    }
+
+    #nav li > a::after {
+        content: '▼';
+        font-size: 12px;
+        color: #666;
+    }
+
+    #nav li:not(:has(.subnav)) > a::after {
+        content: '';
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        margin-left: auto;
+    }
+
+    .subnav {
+        display: none;
+        position: relative;
+        background-color: #fff;
+        min-width: 100%;
+        padding: 10px 15px;
+        border-left: 2px solid #eee;
+        box-shadow: none;
+    }
+
+    .ontop1 {
+        font-size: 12px;
+        padding: 0px 0px;
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 12px;
+    }
+
+    .logo img {
+        height: 60px;
+        margin: 0 auto;
+    }
+
+    .header-icons {
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .search-box {
+        top: 40px;
+        left: auto;
+        right: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+    .overlay {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .overlay-content {
+        position: relative;
+        top: unset;
+        left: unset;
+        transform: none;
+        margin-top: 30px;
+        padding: 0 20px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .email-form {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .email-form input {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .email-form button {
+        width: 100%;
+        max-width: 150px;
+    }
+
+    .footer-container {
+        position: relative;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    .footer-contact,
+    .footer-section,
+    .footer-social {
+        width: 100%;
+    }
+
+    .fanpage-box {
+        text-align: left;
+    }
+    .container {
+        flex-direction: column;           /* Chuyển thành dọc */
+        padding: 10px;                    /* Giảm khoảng đệm */
+        gap: 20px;                        /* Giảm khoảng cách giữa các phần tử */
+    }
+    
+    .image-box,
+    .info-box {
+        max-width: 100%;                 /* Chiếm toàn bộ chiều rộng */
+        min-width: unset;                /* Bỏ giới hạn tối thiểu */
+    }
+    
+    h2 {
+        font-size: 1.3em;                /* Giảm kích cỡ tiêu đề */
+    }
+    
+    .career-box,
+    .activities-box,
+    .quote-box {
+        padding: 0 10px;
+    }
+    
+    blockquote {
+        font-size: 0.95em;               /* Thu nhỏ chữ trong trích dẫn */
+    }
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    #nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: white;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 999;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #nav.active {
+        display: flex;
+    }
+
+    #nav > li {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        margin-left: auto;
+    }
+
+    #nav > li > a {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    #nav li.active .subnav {
+        display: block;
+    }
+
+    #nav li > a::after {
+        content: '▼';
+        font-size: 12px;
+        color: #666;
+    }
+
+    #nav li:not(:has(.subnav)) > a::after {
+        content: '';
+    }
+
+    .subnav {
+        display: none;
+        position: relative;
+        padding: 10px 15px;
+        background-color: #fff;
+        border-left: 2px solid #eee;
+        box-shadow: none;
+    }
+
+    .ontop1 {
+        padding: 4px 15px;
+        width: 90%;
+        margin-left: auto;
+    }
+    .overlay {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .overlay-content {
+        position: relative;
+        top: unset;
+        left: unset;
+        transform: none;
+        margin-top: 40px;
+        padding: 0 40px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .email-form {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .email-form input {
+        width: 300px;
+    }
+
+    .email-form button {
+        width: 150px;
+    }
+
+    .footer-container {
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 40px;
+        justify-content: space-between;
+    }
+
+    .footer-contact,
+    .footer-section,
+    .footer-social {
+        width: 48%;
+    }
+
+    .fanpage-box {
+        text-align: left;
+    }
+    
+}

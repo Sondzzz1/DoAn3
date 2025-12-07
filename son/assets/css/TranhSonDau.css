@@ -1,0 +1,829 @@
+*{
+    margin:0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+.ontop {
+    background-color: rgb(251, 156, 5);
+    color: white;
+    padding: 9px 0;
+    font-size: 14px;
+    width: 100%;
+    position: fixed; /* Cố định ontop */
+    top: 0; /* Dính vào mép trên */
+    left: 0;
+    z-index: 1001;
+    
+}
+.ontop1{
+    padding: 0 100px;
+    width: 65%;
+    margin-left: 86px;
+}
+/* Đây là phần header phần đầu của giao diện chương trình */
+#header {
+    position: fixed;  
+    top: 35px; /* Đẩy header xuống dưới phần ontop */
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    padding: 0 0px;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
+    z-index: 1000; /* Đảm bảo header nằm dưới ontop */
+}
+#main {
+    padding-top: 145px; /* Điều chỉnh theo chiều cao của .ontop và #header */
+}
+/* Logo */
+.logo img {
+    height: 88px;
+    margin-left: 10px;
+    margin-left: 20px;
+}
+
+/* Thanh điều hướng */
+#nav {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+#nav li {
+    position: relative;
+}
+
+#nav > li {
+    margin-right: 30px;
+}
+
+#nav a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 15px;
+    font-size: 13.5px;
+    font-weight: bold;
+    display: block;
+}
+/* dấu 3 gạch khi responsiveresponsive */
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 10px;
+}
+.ti-user {
+    cursor: pointer; /* Thay đổi con trỏ thành hình bàn tay */
+}
+.ti-shopping-cart{
+    cursor: pointer;
+}
+.header-icons i:hover {
+    color: orange; /* Chuyển sang màu cam */
+}
+#nav a:hover {
+    color: white;
+    background-color: #ff6f61;
+    border-radius: 5px;
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+/* --- 1. KHUNG TÌM KIẾM (SEARCH BAR) --- */
+.search-container {
+    position: relative;
+    margin-right: 15px; /* Cách các icon khác một chút */
+}
+
+.search-box {
+    position: relative;
+    display: flex;           /* Xếp input và icon nằm ngang */
+    align-items: center;     /* Căn giữa dọc */
+    background-color: #fff;  /* Nền trắng */
+    border: 1px solid #e0e0e0; /* Viền xám nhạt */
+    border-radius: 20px;     /* Bo tròn hình viên thuốc */
+    padding: 5px 15px;       /* Khoảng cách bên trong */
+    width: 260px;            /* Độ dài thanh tìm kiếm */
+    transition: all 0.3s ease;
+}
+
+/* Khi bấm vào thì viền sáng lên */
+.search-box:focus-within {
+    border-color: #f7931e;
+    box-shadow: 0 0 0 2px rgba(247, 147, 30, 0.1);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+    flex: 1; /* Chiếm hết khoảng trống */
+    padding-right: 10px;
+}
+
+.search-box .ti-search {
+    font-size: 16px;
+    color: #777;
+    cursor: pointer;
+}
+
+.search-box .ti-search:hover {
+    color: #f7931e;
+}
+
+/* --- 2. BẢNG KẾT QUẢ (DROPDOWN MÀU CAM) --- */
+#homeSearchResults {
+    position: absolute;
+    top: 130%; /* Đẩy xuống dưới thanh tìm kiếm 1 chút */
+    right: 0;
+    width: 320px; /* Rộng hơn thanh tìm kiếm để hiện đủ chữ */
+    background-color: #f7931e; /* MÀU CAM CHỦ ĐẠO */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 99999; /* Luôn nổi lên trên cùng */
+    display: none;  /* Mặc định ẩn */
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 5px 0;
+}
+
+/* Mũi tên tam giác nhỏ chỉ lên trên (trang trí) */
+#homeSearchResults::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    border-width: 0 8px 8px 8px;
+    border-style: solid;
+    border-color: transparent transparent #f7931e transparent;
+}
+
+#homeSearchResults.active {
+    display: block; /* Hiện ra khi có kết quả */
+}
+
+/* --- TỪNG DÒNG KẾT QUẢ --- */
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: background 0.2s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #d35400;
+}
+
+/* --- ẢNH SẢN PHẨM THẬT (Mới thêm) --- */
+.search-result-item .item-thumb {
+    width: 45px;        /* Chiều rộng ảnh */
+    height: 45px;       /* Chiều cao ảnh */
+    object-fit: cover;  /* Cắt ảnh vừa khung mà không bị méo */
+    border-radius: 4px; /* Bo góc nhẹ */
+    margin-right: 12px; /* Cách phần chữ ra */
+    background-color: #fff; /* Nền trắng phòng khi ảnh png trong suốt */
+    border: 1px solid rgba(255,255,255,0.3); /* Viền mờ xung quanh ảnh */
+}
+
+/* Thông tin chữ */
+.search-result-item .item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search-result-item .item-name {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.search-result-item .item-meta {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.highlight {
+    background-color: rgba(0,0,0,0.2);
+    color: #fff;
+    font-weight: bold;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.no-result {
+    padding: 15px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Subnav */
+.subnav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 296px;
+    list-style: none;
+    border-radius: 5px;
+}
+
+.subnav li {
+    width: 100%;
+}
+
+.subnav a {
+    color: #333;
+    padding: 12px;
+    display: block;
+}
+
+.subnav li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Hiển thị menu con khi hover */
+#nav li:hover .subnav {
+    display: block;
+}
+
+/* Subnav cấp 2 */
+.subnav1 {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.subnav li:hover .subnav1 {
+    display: block;
+}
+.container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.sidebar {
+    width: 300px;
+    padding-right: 25px;
+    margin-left: 158px;
+}
+h2{
+    padding-top: 0px;
+    display:flex;
+    font-size: 25px;
+}
+h3 {
+    padding: 15px;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: linear-gradient(to right, #fff, #f8f8f8);
+    appearance: none;
+}
+.photograph-min {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+    height:auto;
+}
+
+.painting {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.painting:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.painting img {
+    width: 100%;
+    border-radius: 8px;
+    height: auto;
+}
+
+.category {
+    font-size: 12px;
+    color: gray;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #0e0d0d;
+    margin-right: 10px;
+}
+
+.discounted-price {
+    color: orange;
+}
+
+#footer {
+    position: relative;
+    width: 100%;
+    height: 450px; /* Tăng chiều cao để chứa đủ nội dung footer */
+    margin-top: 60px; /* Tạo khoảng cách với phần nội dung trên */
+}
+
+/* Overlay chứa cả ảnh nền và nội dung */
+.overlay {
+    position: relative;
+    width: 100%;
+    height: 450px; /* Tăng chiều cao để chứa đủ nội dung footer */
+    overflow: hidden;
+}
+
+/* Ảnh nền chiếm toàn bộ */
+.overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(60%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.overlay h2 {
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.overlay p {
+    margin-bottom: 15px;
+    color: white;
+}
+/* Nội dung trong overlay */
+.overlay-content {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+
+}
+
+.overlay-content h2,
+.overlay-content p {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+/* Form đăng ký email */
+.email-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.email-form input {
+    padding: 10px;
+    width: 250px;
+    border: none;
+    border-radius: 5px;
+}
+
+.email-form button {
+    padding: 10px 20px;
+    background: orange;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Footer-container nằm trong overlay */
+.footer-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 260px; /* Tăng chiều cao để chứa đủ text facebook.com/lanvugallery123 */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.7); /* Làm mờ để nhìn rõ chữ */
+    color: white;
+    z-index: 2;
+    box-sizing: border-box;
+}
+.footer-container a {
+    color: white;  /* Đổi màu chữ về trắng */
+    text-decoration: none; /* Loại bỏ gạch chân */
+}
+/* Bố cục các phần trong footer */
+.footer-contact, .footer-section, .footer-social {
+    width: 24%;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.footer-contact h3, .footer-section h3, .footer-social h3 {
+    color: #ff6600;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+/* Fanpage box */
+.fanpage-box {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+/* Thanh toán */
+.payment-icons span {
+    display: inline-block;
+    margin-right: 8px;
+    background: rgba(240, 233, 233, 0.3);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+}
+.footer-contact i{
+    color:#ff6600 ;
+}
+
+.footer-contact p {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    
+    color: white;
+}
+
+.footer-contact a {
+    color: white;
+    text-decoration: none;
+}
+
+@media only screen and (max-width: 767px) {
+    #nav {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        padding: 0;
+        background: white;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 999;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #nav.active {
+        display: flex;
+    }
+
+    #nav > li {
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+    }
+
+    #nav > li > a {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    #nav li.active .subnav {
+        display: block;
+    }
+
+    #nav li > a::after {
+        content: '▼';
+        font-size: 12px;
+        color: #666;
+    }
+
+    #nav li:not(:has(.subnav)) > a::after {
+        content: '';
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        margin-left: auto;
+    }
+
+    .subnav {
+        display: none;
+        position: relative;
+        background-color: #fff;
+        min-width: 100%;
+        padding: 10px 15px;
+        border-left: 2px solid #eee;
+        box-shadow: none;
+    }
+
+    .ontop1 {
+        font-size: 12px;
+        padding: 0px 0px;
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 12px;
+    }
+
+    .logo img {
+        height: 60px;
+        margin: 0 auto;
+    }
+
+    .header-icons {
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .search-box {
+        top: 40px;
+        left: auto;
+        right: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+    .overlay {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .overlay-content {
+        position: relative;
+        top: unset;
+        left: unset;
+        transform: none;
+        margin-top: 30px;
+        padding: 0 20px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .email-form {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .email-form input {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .email-form button {
+        width: 100%;
+        max-width: 150px;
+    }
+
+    .footer-container {
+        position: relative;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    .footer-contact,
+    .footer-section,
+    .footer-social {
+        width: 100%;
+    }
+
+    .fanpage-box {
+        text-align: left;
+    }
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .photograph-min {
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .painting {
+        margin-bottom: 20px;
+    }
+
+    h2, h3 {
+        text-align: center;
+    }
+}
+
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    #nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: white;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 999;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #nav.active {
+        display: flex;
+    }
+
+    #nav > li {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        margin-left: auto;
+    }
+
+    #nav > li > a {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    #nav li.active .subnav {
+        display: block;
+    }
+
+    #nav li > a::after {
+        content: '▼';
+        font-size: 12px;
+        color: #666;
+    }
+
+    #nav li:not(:has(.subnav)) > a::after {
+        content: '';
+    }
+
+    .subnav {
+        display: none;
+        position: relative;
+        padding: 10px 15px;
+        background-color: #fff;
+        border-left: 2px solid #eee;
+        box-shadow: none;
+    }
+
+    .ontop1 {
+        padding: 4px 15px;
+        width: 90%;
+        margin-left: auto;
+    }
+    .overlay {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .overlay-content {
+        position: relative;
+        top: unset;
+        left: unset;
+        transform: none;
+        margin-top: 40px;
+        padding: 0 40px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .email-form {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .email-form input {
+        width: 300px;
+    }
+
+    .email-form button {
+        width: 150px;
+    }
+
+    .footer-container {
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 40px;
+        justify-content: space-between;
+    }
+
+    .footer-contact,
+    .footer-section,
+    .footer-social {
+        width: 48%;
+    }
+
+    .fanpage-box {
+        text-align: left;
+    }
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar {
+        width: 90%;
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .photograph-min {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 90%;
+    }
+}

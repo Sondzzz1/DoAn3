@@ -1,0 +1,323 @@
+/* ==================== TRANG QUÊN MẬT KHẨU ==================== */
+.forgot-password-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    margin: 40px 20px;
+    padding: 40px 0;
+}
+
+.forgot-password-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.forgot-password-container h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #e67e22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.forgot-password-container h2 i {
+    font-size: 24px;
+}
+
+.forgot-password-container > p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Form */
+.forgot-password-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group label i {
+    color: #e67e22;
+    font-size: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+}
+
+.submit-button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+}
+
+.submit-button i {
+    font-size: 18px;
+}
+
+/* Links */
+.form-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 25px;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+.form-links a {
+    color: #e67e22;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.form-links a:hover {
+    color: #d35400;
+    text-decoration: underline;
+}
+
+.form-links span {
+    color: #ccc;
+}
+
+/* Kết quả hiển thị mật khẩu */
+.password-result {
+    margin-top: 30px;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border: 2px solid #28a745;
+}
+
+.password-result.hidden {
+    display: none;
+}
+
+.result-content {
+    text-align: center;
+}
+
+.result-content i {
+    font-size: 48px;
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+.result-content h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.password-display {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.password-display input {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    background-color: #fff;
+    border: 2px solid #28a745;
+    border-radius: 6px;
+    color: #28a745;
+    font-family: 'Courier New', monospace;
+}
+
+.copy-button {
+    padding: 12px 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.copy-button:active {
+    transform: scale(0.95);
+}
+
+.result-message {
+    font-size: 13px;
+    color: #666;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 1.6;
+}
+
+.result-message i {
+    font-size: 16px;
+    color: #17a2b8;
+}
+
+.result-actions {
+    margin-top: 25px;
+}
+
+.btn-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #e67e22;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
+/* Thông báo lỗi */
+.error-message {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    color: #721c24;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.error-message.hidden {
+    display: none;
+}
+
+.error-message i {
+    font-size: 20px;
+    color: #dc3545;
+}
+
+/* Responsive */
+@media only screen and (max-width: 767px) {
+    .forgot-password-section {
+        margin: 20px 10px;
+        padding: 20px 0;
+    }
+
+    .forgot-password-container {
+        padding: 25px 20px;
+    }
+
+    .forgot-password-container h2 {
+        font-size: 22px;
+    }
+
+    .password-display {
+        flex-direction: column;
+    }
+
+    .password-display input {
+        width: 100%;
+    }
+
+    .copy-button {
+        width: 100%;
+    }
+
+    .form-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-links span {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .forgot-password-container {
+        max-width: 450px;
+        padding: 35px;
+    }
+}
+

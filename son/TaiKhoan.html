@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin tài khoản</title>
+    <link rel="stylesheet" href="./assets/css/TaiKhoan.css">
+    <link rel="stylesheet" href="./icon/fonts/themify-icons/themify-icons.css">
+    <script src="./assets/js/common.js" defer></script>
+    <script src="./assets/js/cart.js" defer></script>
+    <script src="./assets/js/TaiKhoan.js" defer></script>
+</head>
+<body>
+    <div class="ontop">
+        <span class="ontop1">CONTACT | Thứ 2-CN: 08H00 - 21H00 | 0948883535 - 0948863535</span>
+    </div>
+    <div id="main">
+        <div id="header">
+            <div class="logo">               
+                <a href="index.html">
+                    <img src="./assets/TrangNgoai/logo1.png" alt="Logo">
+                </a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="ti-menu"></i>
+            </div>
+            <ul id="nav">
+                <li><a href="index.html">TRANG CHỦ</a></li>
+                <li>
+                    <a href="">GIỚI THIỆU</a>
+                    <ul class="subnav">
+                        <li><a href="">Nhà sáng lập - Họa sĩ, kiến trúc sư <br/> Lan Vũ </a> </li>
+                        <li><a href="">Về chúng tôi</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">TÁC PHẨM</a>
+                    <ul class="subnav">
+                        <li><a href="TranhSonDau.html">Tranh sơn dầu</a></li>
+                        <li><a href="TranhCoDien.html">Tranh cổ điển </a></li>
+                        <li><a href="TranhSonMai.html">Tranh sơn mài</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">HỌA SĨ</a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="">Họa sĩ Sơn dầu</a>
+                            <ul class="subnav1">
+                                <li><a href="HoaSiLanVu.html">Lân Vũ</a></li>
+                                <li><a href="">Đoàn Hòa</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ Sơn mài</a>
+                            <ul class="subnav1">
+                                <li><a href="">Lý Trực Sơn</a></li>
+                                <li><a href="">Lê Văn Thìn</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ màu nước</a>
+                            <ul class="subnav1">
+                                <li><a href="">Phan Vũ Tuấn</a></li>
+                            </ul>
+                        </li>
+                    </ul>          
+                </li>
+                <li>
+                    <a href="">DỊCH VỤ</a>
+                    <ul class="subnav">
+                        <li><a href="ThietKeTaiNha.html">Tư vấn thiết kế tại nhà</a></li>
+                        <li><a href="">Vẽ tranh theo yêu cầu</a></li>
+                    </ul>
+                </li>
+                <li><a href="">TIN TỨC</a></li>
+                <li><a href="">LIÊN HỆ</a></li>
+                <div class="header-icons">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Nhập từ khóa...">      
+                            <i class="ti-search"></i>      
+                            <div id="homeSearchResults" class="search-dropdown"></div>
+                        </div>
+                    </div>
+                    <a href="DangKi.html" id="userLink" class="user-link">
+                        <i class="ti-user"></i>
+                    </a>
+                    <a href="GioHang.html">                  
+                        <div class="cart">
+                            <i class="ti-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </div>
+                    </a>
+                </div>                
+            </ul>
+        </div>
+    </div>
+
+    <div class="account-container">
+        <div class="account-sidebar">
+            <div class="user-info-header">
+                <div class="user-avatar">
+                    <i class="ti-user"></i>
+                </div>
+                <h3 id="userNameDisplay">Khách hàng</h3>
+                <p id="userEmailDisplay">email@example.com</p>
+            </div>
+            <nav class="account-nav">
+                <a href="#" class="nav-item active" data-tab="profile">
+                    <i class="ti-user"></i>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="orders">
+                    <i class="ti-shopping-cart"></i>
+                    <span>Đơn hàng</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="address">
+                    <i class="ti-location-pin"></i>
+                    <span>Địa chỉ thanh toán</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="password">
+                    <i class="ti-lock"></i>
+                    <span>Chỉnh sửa mật khẩu</span>
+                </a>
+                <a href="admin.html" class="nav-item admin-btn" id="adminLink" style="display: none;">
+                    <i class="ti-settings"></i>
+                    <span>Quay lại trang quản trị</span>
+                </a>
+                <a href="#" class="nav-item logout-btn" onclick="handleLogout()">
+                    <i class="ti-power-off"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="account-content">
+            <!-- Tab: Thông tin tài khoản -->
+            <div class="tab-content active" id="profile-tab">
+                <h2>Thông tin tài khoản</h2>
+                <div class="form-section">
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="profileName">Họ và tên <span class="required">*</span></label>
+                            <input type="text" id="profileName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profilePhone">Số điện thoại <span class="required">*</span></label>
+                            <input type="tel" id="profilePhone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileEmail">Email <span class="required">*</span></label>
+                            <input type="email" id="profileEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileBirthday">Ngày sinh</label>
+                            <input type="date" id="profileBirthday" name="birthday">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileGender">Giới tính</label>
+                            <select id="profileGender" name="gender">
+                                <option value="">Chọn giới tính</option>
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-save">Lưu thông tin</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab: Đơn hàng -->
+            <div class="tab-content" id="orders-tab">
+                <h2>Đơn hàng của tôi</h2>
+                <div class="orders-list" id="ordersList">
+                    <p class="no-orders">Bạn chưa có đơn hàng nào.</p>
+                </div>
+            </div>
+
+            <!-- Tab: Địa chỉ thanh toán -->
+            <div class="tab-content" id="address-tab">
+                <h2>Địa chỉ thanh toán</h2>
+                <div class="form-section">
+                    <form id="addressForm">
+                        <div class="form-group">
+                            <label for="addressName">Họ và tên người nhận <span class="required">*</span></label>
+                            <input type="text" id="addressName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressPhone">Số điện thoại <span class="required">*</span></label>
+                            <input type="tel" id="addressPhone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressProvince">Tỉnh/Thành phố <span class="required">*</span></label>
+                            <input type="text" id="addressProvince" name="province" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressDistrict">Quận/Huyện <span class="required">*</span></label>
+                            <input type="text" id="addressDistrict" name="district" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressWard">Phường/Xã <span class="required">*</span></label>
+                            <input type="text" id="addressWard" name="ward" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressDetail">Địa chỉ chi tiết <span class="required">*</span></label>
+                            <textarea id="addressDetail" name="detail" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="setDefaultAddress" name="default">
+                                Đặt làm địa chỉ mặc định
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-save">Lưu địa chỉ</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab: Chỉnh sửa mật khẩu -->
+            <div class="tab-content" id="password-tab">
+                <h2>Chỉnh sửa mật khẩu</h2>
+                <div class="form-section">
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Mật khẩu hiện tại <span class="required">*</span></label>
+                            <input type="password" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Mật khẩu mới <span class="required">*</span></label>
+                            <input type="password" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Xác nhận mật khẩu mới <span class="required">*</span></label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn-save">Đổi mật khẩu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="overlay">
+            <img src="./assets/TrangNgoai/Trung-Bay-2-01.jpg" alt="Hình ảnh triển lãm">
+            <div class="overlay-content">
+                <h2>Đăng ký email</h2>
+                <p>Để nhận tin nhắn thông tin và khuyến mãi từ chúng tôi</p>
+                <div class="email-form">
+                    <input type="email" placeholder="Your Email (required)">
+                    <button>Sign Up</button>
+                </div>
+            </div>
+
+            <div class="footer-container">
+                <div class="footer-contact">
+                    <h3>LANVU GALLERY</h3>
+                    <p><i class="ti-location-pin"></i> 56 Nguyễn Phong Sắc, Dịch Vọng, Cầu Giấy, Hà Nội</p>
+                    <p><i class="ti-mobile"></i> 094 888 3535 - 094 886 3535</p>
+                    <p><i class="ti-email"></i> lanvugallery@gmail.com</p>
+                    <p><i class="ti-facebook"></i> <a href="#">facebook.com/lanvugallery123</a></p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Hỗ trợ</h3>
+                    <ul>
+                        <li><a href="#">Tài khoản</a></li>
+                        <li><a href="#">Sản phẩm yêu thích</a></li>
+                        <li><a href="#">Giỏ hàng</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Hướng dẫn</h3>
+                    <ul>
+                        <li><a href="#">Mua hàng và thanh toán</a></li>
+                        <li><a href="#">Chính sách đổi trả & lưu kho</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                        <li><a href="#">Chính sách giao hàng & vận chuyển</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-social">
+                    <h3>Fanpage</h3>
+                    <div class="fanpage-box">LanVu Gallery - 51,628 người theo dõi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

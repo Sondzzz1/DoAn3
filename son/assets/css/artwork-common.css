@@ -1,0 +1,131 @@
+/* ==================== CSS CHUNG CHO CÁC TRANG TRANH ==================== */
+/* File này đảm bảo định dạng thống nhất cho các card tranh được tạo từ JavaScript */
+
+/* Container chứa danh sách tranh */
+.photograph-min {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+    height: auto;
+}
+
+/* Card tranh - áp dụng cho cả tranh HTML và tranh từ JavaScript */
+/* Đảm bảo tất cả card có cùng style */
+.painting,
+.painting.js-generated {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.painting:hover,
+.painting.js-generated:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.painting img,
+.painting.js-generated img {
+    width: 100%;
+    border-radius: 8px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Category text */
+.painting .category {
+    font-size: 12px;
+    color: gray;
+    text-transform: uppercase;
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+/* Tên tranh */
+.painting .name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #333;
+}
+
+/* Giá tranh - chuẩn hóa cho tất cả card */
+.painting .price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff6f61;
+    margin-top: 5px;
+    display: block;
+    line-height: 1.5;
+    min-height: 24px;
+    text-align: center;
+}
+
+/* Giá gốc (nếu có giảm giá) - hiển thị gạch ngang */
+.painting .price .original-price,
+.painting .price span.original-price {
+    text-decoration: line-through;
+    color: #666;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    display: inline-block;
+}
+
+/* Giá giảm (nếu có giảm giá) - màu cam đậm */
+.painting .price .discounted-price,
+.painting .price span.discounted-price {
+    color: #ff6f61;
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+}
+
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+    .photograph-min {
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .painting {
+        margin-bottom: 20px;
+    }
+}
+
+/* Responsive cho tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .photograph-min {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 90%;
+    }
+}
+
+/* ==================== CSS CHO HIỂN THỊ TÊN NGƯỜI DÙNG ==================== */
+/* Style cho phần hiển thị tên người dùng bên dưới icon user */
+.user-name-display {
+    display: block;
+    font-size: 11px;
+    margin-top: 3px;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    max-width: 80px;
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+

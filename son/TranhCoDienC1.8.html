@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/TranhCoDienC1.8.css">
+    <link rel="stylesheet" href="./icon/fonts/themify-icons/themify-icons.css">
+    <script src="./assets/js/common.js" defer></script>
+    <script src="./assets/js/slideshow.js" defer></script>
+    <script src="./assets/js/cart.js" defer></script>
+    <title>Tranh cổ điển C1.8</title>
+</head>
+<body>
+    <div class="ontop">
+        <span class="ontop1">CONTACT | Thứ 2-CN: 08H00 - 21H00 | 0948883535 - 0948863535</span>
+    </div>
+    <div id="main">
+        <div id="header">
+            <div class="logo">
+                
+                <a href="index.html" >
+                    <img src="./assets/TrangNgoai/logo1.png" alt="Ảnh logo đấy baby">
+                </a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="ti-menu"></i> <!-- Icon 3 gạch từ Themify Icons -->
+            </div>
+            <ul id="nav">
+                <li><a href="index.html">TRANG CHỦ</a></li>
+                <li>
+                    <a href="">GIỚI THIỆU</a>
+                    <ul class="subnav">
+                        <li><a href="">Nhà sáng lập - Họa sĩ, kiến trúc sư <br/> Lan Vũ </a> </li>
+                        <li><a href="">Về chúng tôi</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">TÁC PHẨM</a>
+                    <ul class="subnav">
+                        <li><a href="TranhSonDau.html">Tranh sơn dầu</a></li>
+                        <li><a href="TranhCoDien.html">Tranh cổ điển </a></li>
+                        <li><a href="TranhSonMai.html">Tranh sơn mài</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">HỌA SĨ</a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="">Họa sĩ Sơn dầu</a>
+                            <ul class="subnav1">
+                                <li><a href="HoaSiLanVu.html">Lân Vũ</a></li>
+                                <li><a href="">Đoàn Hòa</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ Sơn mài</a>
+                            <ul class="subnav1">
+                                <li><a href="">Lý Trực Sơn</a></li>
+                                <li><a href="">Lê Văn Thìn</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ màu nước</a>
+                            <ul class="subnav1">
+                                <li><a href="">Phan Vũ Tuấn</a></li>
+                            </ul>
+                        </li>
+                    </ul>          
+                </li>
+                <li>
+                    <a href="">DỊCH VỤ</a>
+                    <ul class="subnav">
+                        <li><a href="ThietKeTaiNha.html">Tư vấn thiết kế tại nhà</a></li>
+                        <li><a href="">Vẽ tranh theo yêu cầu</a></li>
+                    </ul>
+                
+                </li>
+                <li><a href="">TIN TỨC</a></li>
+                <li><a href="">LIÊN HỆ</a></li>
+                <div class="header-icons">
+                    <div class="search-container">
+                        <!-- Bắt đầu hộp tìm kiếm -->
+                        <div class="search-box">
+                            <!-- Ô nhập liệu -->
+                            <input type="text" id="searchInput" placeholder="Nhập từ khóa...">      
+                            <!-- Icon kính lúp (Đã chuyển vào trong này) -->
+                            <i class="ti-search"></i>      
+                            <!-- Bảng kết quả (Giữ nguyên) -->
+                            <div id="homeSearchResults" class="search-dropdown"></div>
+                        </div>
+                    </div>
+                    <a href="DangKi.html" id="userLink" class="user-link">
+                        <i class="ti-user"></i>
+                    </a>
+                    <a href="GioHang.html">                  
+                        <div class="cart">
+                            <i class="ti-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </div>
+                    </a>
+                </div>                
+            </ul>
+        </div>
+    </div>
+    <div class="product-container">
+        <div class="product-image">
+            <img src="./assets/codien/C1.8.webp" alt="Tranh cổ điển C1.8">
+        </div>
+        <div class="product-details">
+            <h1>Tranh cổ điển C1.8</h1>
+            <p><strong>Chuyên mục:</strong> Tranh cổ điển, Tranh sơn dầu</p>
+            <p><strong>Họa sĩ:</strong> Lanvu Gallery</p>
+            <p><strong>Chất liệu tranh:</strong> Chất liệu tổng hợp, Toan vải Nga nhập khẩu</p>
+            <p><strong>Chất liệu khung:</strong> Khung gỗ sồi cao cấp, Màu gỗ óc chó tự nhiên</p>
+            <p><strong>Kích thước:</strong> 60x90 cm</p>
+        
+            <!-- Giá và số lượng -->
+            <div class="price-quantity">
+                <p class="price">Giá: <strong>6.100.000₫</strong></p>
+                <label for="quantity">Số lượng:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-input">
+            </div>
+        
+            <!-- Nút hành động -->
+            <div class="action-buttons">
+                <button class="btn-cart" 
+                    onclick="addToCartFromButton(this)"
+                    data-id="QT067"
+                    data-name="Tranh cổ điển C1.8"
+                    data-price="6100000"
+                    data-image="./assets/codien/C1.8.webp">
+                    <b><i class="fa-solid fa-cart-plus"></i></b> THÊM VÀO GIỎ
+                </button>
+                <button class="btn-buy">MUA NGAY</button>
+            </div>
+        </div>
+        
+        <div class="product-info">
+            <div class="info-item">
+                <i class="ti-truck"></i>
+                <p><strong>GIAO HÀNG TIÊU CHUẨN</strong><br>Dự kiến giao 1-7 ngày.</p>
+            </div>
+            <div class="info-item">
+                <i class="ti-package"></i>
+                <p><strong>THÔNG TIN BẢO HÀNH</strong><br>Bảo hành trọn đời.</p>
+            </div>
+            <div class="info-item">
+                <i class="ti-reload"></i>
+                <p><strong>ĐỔI TRẢ HÀNG</strong><br>Áp dụng đổi hàng trong vòng 3 ngày sau khi bắt đầu nhận cọc và thanh toán. Chỉ đổi hàng ngang giá hoặc cao hơn (liên hệ đổi hàng ngay khi nhận nếu có phát sinh). Khách hàng đã mua sau khi cọc và thanh toán, có phát sinh trả hàng Gallery vẫn nhận tuy nhiên khách hàng sẽ mất 20% tổng giá trị đơn hàng trả lại.</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="info-section">
+        <div class="info-title">THÔNG TIN</div>
+        <div class="info-content">
+          <p><strong>“Vang vọng thinh không”</strong>  là tác phẩm tranh sơn dầu cao cấp được sao chép bởi Lanvu Gallery từ tranh cổ điển gốc có tên “Grandmother’s Birthday” của danh họa nổi tiếng người Ý – Arturo Ricci (1854-1919). Bức tranh tái hiện lại bữa tiệc sinh nhật sung túc của một gia đình hoàng gia châu Âu với bầu không khí ấm cúng, vui vẻ, và đầy sang trọng. Một tác phẩm phù hợp để treo trong không gian phòng khách, đại sảnh theo phong cách cổ điển hoặc tân cổ điển. </p>
+          <p>
+            Thông tin tác phẩm gốc:
+          <p>
+            Tác phẩm: Grandmother’s Birthday
+            Kích thước: 66 x 96,5 cm
+            Chất liệu: Sơn dầu trên canvas
+            Danh họa: Arturo Ricci ( Ý, Florence, 1854-1919)
+          </p>
+          <p>
+            Phong cách cổ điển là một trường phái nghệ thuật của châu Âu trong giai đoạn thế kỷ XVII – XIX, được thể hiện trong nhiều lĩnh vực: văn học, âm nhạc, kiến trúc… Phong cách cổ điển chạm đến những điều truyền thống và cổ kính của văn hóa. Trang trọng và lịch lãm là những điều mà phong cách này mang đến cho không gian.
+          </p>
+          <p>
+            Màu sắc trong tranh cổ điển: Phong cách cổ điển có gam màu chủ đạo là vàng ấm và Nâu. Sự kết hợp giữa hai màu sắc này giúp bức tranh trở lên cổ điển đã có từ hàng trăm năm. Sắc vàng đem đến cảm giác ấm cúng, lãng mạn còn sắc nâu tạo chiều sâu cho bức tranh.
+          </p>
+        </div>
+    </div>
+    <div class="info-work-container">
+        <div class="chu">TÁC PHẨM LIÊN QUAN</div>
+        <i class="trai ti-angle-left" onclick="prevSlide()"></i>
+        <div class="slider-wrapper">
+            <div class="slider" id="slider">
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/bepcuaNgoai.webp" alt="Bếp của Ngoại">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Bếp của Ngoại</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/cãmuctrove.webp" alt="Cảm xúc trở về">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Cảm xúc trở về</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <!-- Tác phẩm 3 -->
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/tranhcodienc1.5.webp" alt="Tranh cổ điển C1.5">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Tranh cổ điển C1.5</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <!-- Tác phẩm 4 -->
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/tranhcodienc1.20.webp" alt="Tranh cổ điển C1.20">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Tranh cổ điển C1.20</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <!-- Tác phẩm 5 -->
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/tranhcodienc1.12.png" alt="Tranh cổ điển C1.12">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Tranh cổ điển C1.12</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <!-- Tác phẩm 6 -->
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/camtucautronggio.webp" alt="Cẩm tú cầu trong gió">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Cẩm tú cầu trong gió</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <!-- Tác phẩm 7 -->
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/tranhcodienc1.16.webp" alt="Tranh cổ điển C1.16">
+                    <p class="category">TRANH SƠN DẦU</p>
+                    <p class="name">Tranh cổ điển C1.16</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+                <!-- Tác phẩm 8 -->
+                <div class="info-work">
+                    <img src="./assets/tplienquancodien/tranhcodien1.11.webp" alt="Sen">
+                    <p class="category">TRANH SƠN MÀI</p>
+                    <p class="name">Tranh cổ điển C1.11</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+            </div>
+        </div>
+        <i class="phai ti-angle-right" onclick="nextSlide()"></i>
+    </div>
+    <div id="footer">
+        <div class="overlay">
+            <img src="./assets/TrangNgoai/Trung-Bay-2-01.jpg" alt="Hình ảnh triển lãm">
+            <div class="overlay-content">
+                <h2>Đăng ký email</h2>
+                <p>Để nhận tin nhắn thông tin và khuyến mãi từ chúng tôi</p>
+                <div class="email-form">
+                    <input type="email" placeholder="Your Email (required)">
+                    <button>Sign Up</button>
+                </div>
+            </div>
+    
+            <!-- Toàn bộ footer-container nằm trong overlay -->
+            <div class="footer-container">
+                <div class="footer-contact">
+                    <h3>LANVU GALLERY</h3>
+                    <p><i class="ti-location-pin"></i> 56 Nguyễn Phong Sắc, Dịch Vọng, Cầu Giấy, Hà Nội</p>
+                    <p><i class="ti-mobile"></i> 094 888 3535 - 094 886 3535</p>
+                    <p><i class="ti-email"></i> lanvugallery@gmail.com</p>
+                    <p><i class="ti-facebook"></i> <a href="#">facebook.com/lanvugallery123</a></p>
+                </div>
+    
+                <div class="footer-section">
+                    <h3>Hỗ trợ</h3>
+                    <ul>
+                        <li><a href="#">Tài khoản</a></li>
+                        <li><a href="#">Sản phẩm yêu thích</a></li>
+                        <li><a href="#">Giỏ hàng</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-section">
+                    <h3>Hướng dẫn</h3>
+                    <ul>
+                        <li><a href="#">Mua hàng và thanh toán</a></li>
+                        <li><a href="#">Chính sách đổi trả & lưu kho</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                        <li><a href="#">Chính sách giao hàng & vận chuyển</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-social">
+                    <h3>Fanpage</h3>
+                    <div class="fanpage-box">LanVu Gallery - 51,628 người theo dõi</div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
