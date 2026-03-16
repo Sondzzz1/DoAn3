@@ -368,6 +368,7 @@
 }
 .intro-text{
     margin-top: 20px;
+    text-align: justify;
 }
 .intro-text h3{
     font-size: 18px;
@@ -400,6 +401,11 @@
     margin: auto;
 }
 
+/* Khoảng cách giữa các phần tác phẩm */
+.info-work-container + .info-work-container {
+    margin-top: 20px;
+}
+
 .info-work-container .chu {
     font-size: 28px;
     font-weight: bold;
@@ -416,7 +422,8 @@
     position: relative;
 }
 
-#slided {
+#slided,
+#slided-bestselling {
     display: flex; /* sắp xếp các item theo hàng ngang */
     transition: transform 0.4s ease;
     will-change: transform;

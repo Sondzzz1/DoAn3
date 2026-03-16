@@ -170,14 +170,29 @@ let slideInterval = setInterval(nextSlide, 4000);
 
 
 //tác phẩm nỗi bật trang chủ
+// Lưu ý: Code này chỉ chạy nếu index.js chưa load dữ liệu từ localStorage
+// Nếu có dữ liệu từ localStorage, index.js sẽ xử lý việc khởi tạo slider
 document.addEventListener("DOMContentLoaded", () => {
     const slider = document.getElementById("slided");
+    if (!slider) return;
+    
     let slides = slider.querySelectorAll(".info-work");
+    
+    // Chỉ chạy nếu có slides và chưa được xử lý bởi index.js
+    if (slides.length === 0) return;
+    
+    // Kiểm tra xem đã có hàm Nextslide chưa (đã được index.js xử lý)
+    if (window.Nextslide && window.Prevslide) {
+        // Đã được xử lý bởi index.js, không cần làm gì
+        return;
+    }
 
     const totalSlides = slides.length;
     const visibleSlides = 4;
+    
+    if (totalSlides === 0 || !slides[0]) return;
+    
     const slideWidth = slides[0].offsetWidth;
-
     let currentIndex = visibleSlides; 
 
     for (let i = slides.length - visibleSlides; i < slides.length; i++) {
@@ -226,8 +241,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { once: true });
     }
 
-    window.Nextslide = Nextslide;
-    window.Prevslide = Prevslide;
+    // Chỉ gán nếu chưa có
+    if (!window.Nextslide) window.Nextslide = Nextslide;
+    if (!window.Prevslide) window.Prevslide = Prevslide;
 });
 
 

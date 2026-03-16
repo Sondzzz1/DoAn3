@@ -18,39 +18,88 @@
     <div id="main">
         <div id="header">
             <div class="logo">
-                <a href="index.html">
-                    <img src="./assets/TrangNgoai/logo1.png" alt="LanVu Gallery">
+                
+                <a href="index.html" >
+                    <img src="./assets/TrangNgoai/logo1.png" alt="Ảnh logo đấy baby">
                 </a>
             </div>
             <div class="menu-toggle" id="menu-toggle">
-                <i class="ti-menu"></i>
+                <i class="ti-menu"></i> <!-- Icon 3 gạch từ Themify Icons -->
             </div>
             <ul id="nav">
                 <li><a href="index.html">TRANG CHỦ</a></li>
-                <li><a href="">GIỚI THIỆU</a></li>
-                <li><a href="">TÁC PHẨM</a></li>
-                <li><a href="">HỌA SĨ</a></li>
-                <li><a href="">DỊCH VỤ</a></li>
+                <li>
+                    <a href="">GIỚI THIỆU</a>
+                    <ul class="subnav">
+                        <li><a href="NhaSangLap.html">Nhà sáng lập - Họa sĩ, kiến trúc sư <br/> Lan Vũ </a> </li>
+                        <li><a href="">Về chúng tôi</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">TÁC PHẨM</a>
+                    <ul class="subnav">
+                        <li><a href="TranhSonDau.html">Tranh sơn dầu</a></li>
+                        <li><a href="TranhCoDien.html">Tranh cổ điển </a></li>
+                        <li><a href="TranhSonMai.html">Tranh sơn mài</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">HỌA SĨ</a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="">Họa sĩ Sơn dầu</a>
+                            <ul class="subnav1">
+                                <li><a href="HoaSiLanVu.html">Lân Vũ</a></li>
+                                <li><a href="">Đoàn Hòa</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ Sơn mài</a>
+                            <ul class="subnav1">
+                                <li><a href="">Lý Trực Sơn</a></li>
+                                <li><a href="">Lê Văn Thìn</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">Họa sĩ màu nước</a>
+                            <ul class="subnav1">
+                                <li><a href="">Phan Vũ Tuấn</a></li>
+                            </ul>
+                        </li>
+                    </ul>          
+                </li>
+                <li>
+                    <a href="">DỊCH VỤ</a>
+                    <ul class="subnav">
+                        <li><a href="ThietKeTaiNha.html">Tư vấn thiết kế tại nhà</a></li>
+                        <li><a href="">Vẽ tranh theo yêu cầu</a></li>
+                    </ul>
+                
+                </li>
                 <li><a href="TinTuc.html">TIN TỨC</a></li>
                 <li class="active"><a href="LienHe.html">LIÊN HỆ</a></li>
                 <div class="header-icons">
                     <div class="search-container">
+                        <!-- Bắt đầu hộp tìm kiếm -->
                         <div class="search-box">
-                            <input type="text" id="searchInput" placeholder="Nhập từ khóa...">
-                            <i class="ti-search"></i>
+                            <!-- Ô nhập liệu -->
+                            <input type="text" id="searchInput" placeholder="Nhập từ khóa...">      
+                            <!-- Icon kính lúp (Đã chuyển vào trong này) -->
+                            <i class="ti-search"></i>      
+                            <!-- Bảng kết quả (Giữ nguyên) -->
                             <div id="homeSearchResults" class="search-dropdown"></div>
                         </div>
                     </div>
                     <a href="DangKi.html" id="userLink" class="user-link">
                         <i class="ti-user"></i>
                     </a>
-                    <a href="GioHang.html">
+                    <a href="GioHang.html">                  
                         <div class="cart">
                             <i class="ti-shopping-cart"></i>
                             <span class="cart-count">0</span>
                         </div>
                     </a>
-                </div>
+                </div>                
             </ul>
         </div>
     </div>
@@ -245,9 +294,17 @@
                     <h3>Hướng dẫn</h3>
                     <ul>
                         <li><a href="#">Mua hàng và thanh toán</a></li>
-                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách đổi trả & lưu kho</a></li>
                         <li><a href="#">Điều khoản dịch vụ</a></li>
+                        <li><a href="#">Chính sách giao hàng & vận chuyển</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
                     </ul>
+                </div>
+        
+                <div class="footer-social">
+                    <h3>Fanpage</h3>
+                    <div class="fanpage-box">LanVu Gallery - 51,628 người theo dõi</div>
+                    
                 </div>
             </div>
         </div>
