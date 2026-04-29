@@ -1,0 +1,220 @@
+/* ==================== ABOUT PAGE STYLES ==================== */
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #f7931e 0%, #ff6f61 100%);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.hero-content h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+.hero-subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+/* Container chính chứa ảnh và thông tin */
+.about-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    gap: 30px;
+}
+
+/* Khối chứa hình ảnh */
+.image-box {
+    flex: 1;
+    min-width: 300px;
+    max-width: 450px;
+}
+
+.image-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Khối chứa thông tin mô tả */
+.info-box {
+    flex: 2;
+    min-width: 300px;
+    text-align: justify;
+}
+
+.info-box h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #f7931e;
+    border-bottom: 3px solid #f7931e;
+    padding-bottom: 10px;
+}
+
+.info-box p {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.info-box strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Định dạng tiêu đề cấp 2 */
+h2 {
+    font-size: 1.8em;
+    margin-top: 30px;
+    color: #333;
+}
+
+/* Khối cho phần sự nghiệp, hoạt động nghệ thuật, trích dẫn */
+.career-box,
+.activities-box,
+.quote-box,
+.vision-box {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.career-box h2,
+.activities-box h2,
+.quote-box h2,
+.vision-box h2 {
+    font-size: 2em;
+    color: #f7931e;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #f7931e;
+    padding-bottom: 10px;
+}
+
+.career-box p,
+.vision-box p {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #555;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+/* Định dạng danh sách hoạt động nghệ thuật */
+.activities-box ul {
+    list-style: disc;
+    padding-left: 30px;
+}
+
+.activities-box li {
+    margin-bottom: 12px;
+    font-size: 1.05em;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* Định dạng cho phần trích dẫn (blockquote) */
+blockquote {
+    font-style: italic;
+    color: #555;
+    margin: 25px 0;
+    border-left: 4px solid #f7931e;
+    padding: 20px 20px 20px 25px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+blockquote cite {
+    display: block;
+    margin-top: 15px;
+    font-style: normal;
+    color: #f7931e;
+    font-weight: bold;
+    text-align: right;
+}
+
+.vision-content {
+    background-color: #f9f9f9;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 4px solid #f7931e;
+}
+
+.vision-content p {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #555;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 767px) {
+    .hero-section {
+        padding: 50px 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 2em;
+    }
+
+    .hero-content h2 {
+        font-size: 1.5em;
+    }
+
+    .hero-subtitle {
+        font-size: 1em;
+    }
+    
+    .about-container {
+        flex-direction: column;
+        padding: 10px;
+        gap: 20px;
+    }
+    
+    .image-box,
+    .info-box {
+        max-width: 100%;
+        min-width: unset;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .info-box h2,
+    .career-box h2,
+    .activities-box h2,
+    .quote-box h2,
+    .vision-box h2 {
+        font-size: 1.5em;
+    }
+    
+    .career-box,
+    .activities-box,
+    .quote-box,
+    .vision-box {
+        padding: 0 10px;
+    }
+    
+    blockquote {
+        font-size: 1em;
+        padding: 15px;
+    }
+}

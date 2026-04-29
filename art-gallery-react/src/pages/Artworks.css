@@ -1,0 +1,172 @@
+/* ==================== ARTWORKS PAGE - Tái hiện theo TranhSonDau.css gốc ==================== */
+
+/* Wrapper toàn trang */
+.artworks-page {
+    /* Đẩy nội dung xuống dưới header sticky */
+    padding-top: 30px;
+}
+
+/* Container chính - flex layout giống gốc */
+.artworks-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Sidebar lọc giống 100% gốc */
+.sidebar {
+    width: 300px;
+    padding-right: 25px;
+    margin-left: 0;
+}
+
+.sidebar h2 {
+    padding-top: 0px;
+    display: flex;
+    font-size: 25px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.sidebar h3 {
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: #555;
+    border-top: 1px solid #eee;
+}
+
+.sidebar select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: linear-gradient(to right, #fff, #f8f8f8);
+    appearance: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.sidebar select:focus {
+    outline: none;
+    border-color: orange;
+}
+
+/* Khu vực tranh */
+.photograph {
+    flex: 1;
+}
+
+/* Grid tranh - 3 cột giống gốc */
+.photograph-min {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+/* Card tranh giống gốc */
+.painting {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.painting:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.painting img {
+    width: 100%;
+    border-radius: 8px;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    display: block;
+}
+
+.category {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    color: #888;
+    text-transform: uppercase;
+    margin-top: 15px;
+    font-weight: normal;
+}
+
+.name {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 8px 0;
+    color: #2c3e50;
+}
+
+.price {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #b30000;
+    margin-top: 2px;
+    display: block;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #666;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    display: inline-block;
+}
+
+.discounted-price {
+    color: #b30000;
+    font-weight: bold;
+    font-size: 18px;
+    display: inline-block;
+}
+
+/* ==================== Responsive ==================== */
+
+@media only screen and (max-width: 1024px) {
+    .photograph-min {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .artworks-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+
+    .photograph-min {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar h2, .sidebar h3 {
+        text-align: center;
+        justify-content: center;
+    }
+}

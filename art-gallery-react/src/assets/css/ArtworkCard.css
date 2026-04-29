@@ -1,0 +1,118 @@
+/* Artwork Card Styles */
+.artwork-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  min-width: 280px;
+}
+
+.artwork-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.artwork-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.artwork-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.artwork-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.artwork-card:hover .artwork-image img {
+  transform: scale(1.1);
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.badge.featured {
+  background: #ff7b00;
+}
+
+.badge.bestselling {
+  background: #28a745;
+}
+
+.artwork-info {
+  padding: 20px;
+}
+
+.artwork-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artwork-artist,
+.artwork-category,
+.artwork-size {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.artwork-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.artwork-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d32f2f;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.btn-add-to-cart {
+  padding: 8px 16px;
+  background: #ff7b00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.btn-add-to-cart:hover {
+  background: #e66a00;
+}
+
+.out-of-stock {
+  color: #e74c3c;
+  font-weight: bold;
+}

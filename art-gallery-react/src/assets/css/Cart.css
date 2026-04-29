@@ -1,0 +1,145 @@
+/* Cart Page Styles */
+.cart-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.table-prod {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-prod thead {
+  background: #ff7b00;
+  color: white;
+}
+
+.table-prod th,
+.table-prod td {
+  padding: 15px;
+  text-align: center;
+}
+
+.table-prod tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.table-prod tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.sl-sp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.sl-sp button {
+  background: #ff7b00;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sl-sp input {
+  width: 50px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.update {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.update button {
+  padding: 12px 24px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.update button:hover {
+  background: #555;
+}
+
+.table-right {
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-right td {
+  padding: 15px;
+}
+
+.table-right .title {
+  background: #ff7b00;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.table-right .price {
+  text-align: right;
+  font-weight: bold;
+  color: #ff7b00;
+}
+
+.pay {
+  margin-top: 20px;
+}
+
+.pay button {
+  width: 100%;
+  padding: 15px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.pay button:hover {
+  background: #218838;
+}
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
