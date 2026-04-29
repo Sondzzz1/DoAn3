@@ -11,9 +11,9 @@ const Home: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    '/assets/TrangNgoai/slide1.jpg',
-    '/assets/TrangNgoai/slide2.jpg',
-    '/assets/TrangNgoai/slide3.jpg',
+    '/assets/TrangNgoai/anhgiaodien1.webp',
+    '/assets/TrangNgoai/anhgiaodien2.webp',
+    '/assets/TrangNgoai/anhgiaodien3.jpg',
   ];
 
   useEffect(() => {

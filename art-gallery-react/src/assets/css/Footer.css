@@ -43,12 +43,14 @@
 }
 
 .overlay-content h2 {
+    color: white;
     font-size: 24px;
     text-transform: uppercase;
     margin-bottom: 10px;
 }
 
 .overlay-content p {
+    color: white;
     margin-bottom: 20px;
 }
 

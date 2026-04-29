@@ -12,7 +12,7 @@ export const sampleArtworks: Artwork[] = [
     chatLieu: 'Sơn dầu trên toan vải Nga',
     chatLieuKhung: 'Khung gỗ sồi cao cấp',
     soLuongTon: 5,
-    anhTranh: '/assets/sondau/sangdong.webp',
+    anhTranh: '/assets/TrangNgoai/sangdong.webp',
     moTa: 'Bức tranh thể hiện vẻ đẹp của mùa đông sang',
     isFeatured: true,
     isBestSelling: false,

@@ -6,7 +6,9 @@
 #slider {
   position: relative;
   width: 100%;
-  height: 500px;
+  /* Set aspect ratio to keep the banner responsive and show full width */
+  aspect-ratio: 21 / 9;
+  max-height: 600px;
   overflow: hidden;
   margin-bottom: 40px;
 }

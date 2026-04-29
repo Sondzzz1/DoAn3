@@ -22,6 +22,13 @@ interface TranhViewDTO {
 
 // Chuyển đổi từ DTO backend sang Artwork frontend
 const mapToArtwork = (dto: TranhViewDTO): Artwork => {
+  let anhTranh = dto.hinhAnh || '/placeholder.jpg';
+  
+  // Tạm thời hardcode cho tranh Sang Đông (Backend sẽ sửa sau)
+  if (dto.tenTranh === 'Sang Đông') {
+    anhTranh = '/assets/TrangNgoai/sangdong.webp';
+  }
+
   return {
     id: dto.id,
     tenTranh: dto.tenTranh,
@@ -32,7 +39,7 @@ const mapToArtwork = (dto: TranhViewDTO): Artwork => {
     chatLieu: dto.chatLieu,
     chatLieuKhung: '', // Backend không có field này
     soLuongTon: dto.soLuongTon,
-    anhTranh: dto.hinhAnh || '/placeholder.jpg',
+    anhTranh: anhTranh,
     moTa: dto.moTa,
     isFeatured: false, // Có thể thêm logic để xác định
     isBestSelling: false, // Có thể thêm logic để xác định

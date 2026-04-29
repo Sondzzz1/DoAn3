@@ -57,7 +57,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       const savedArtworks = localStorage.getItem('admin_artworks');
       if (savedArtworks) {
         try {
-          setArtworks(JSON.parse(savedArtworks));
+          const parsedArtworks = JSON.parse(savedArtworks);
+          // Hardcode tạm thời cho Sang Đông
+          const hardcodedFallback = parsedArtworks.map((item: any) => 
+            item.tenTranh === 'Sang Đông' 
+              ? { ...item, anhTranh: '/assets/TrangNgoai/sangdong.webp' } 
+              : item
+          );
+          setArtworks(hardcodedFallback);
           console.log('⚠️ Đã load tranh từ localStorage (fallback)');
         } catch (err) {
           console.error('Error loading artworks from localStorage:', err);
