@@ -19,7 +19,7 @@ const News: React.FC = () => {
                     <div className="featured-news fade-in">
                         <div className="featured-image">
                             {/* Assuming images are copied to public or accessible. Using placeholder if not */}
-                            <img src="https://images.unsplash.com/photo-1544928147-79a2dbc1f389?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Triển lãm tranh" />
+                            <img src="/assets/tintucnoibat/camtucau.webp" alt="Triển lãm tranh" />
                             <div className="featured-overlay">
                                 <span className="featured-badge">NỔI BẬT</span>
                             </div>
@@ -40,7 +40,7 @@ const News: React.FC = () => {
                     <div className="news-grid">
                         <article className="news-card fade-in">
                             <div className="news-card-image">
-                                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Đề bàn" />
+                                <img src="/assets/tintucnoibat/deban.webp" alt="Đề bàn" />
                                 <div className="news-card-overlay">
                                     <a href="#" className="view-btn"><i className="ti-eye"></i></a>
                                 </div>
@@ -58,7 +58,7 @@ const News: React.FC = () => {
 
                         <article className="news-card fade-in">
                             <div className="news-card-image">
-                                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ngắm sen" />
+                                <img src="/assets/tintucnoibat/ngamsen.webp" alt="Ngắm sen" />
                                 <div className="news-card-overlay">
                                     <a href="#" className="view-btn"><i className="ti-eye"></i></a>
                                 </div>
@@ -76,7 +76,7 @@ const News: React.FC = () => {
 
                         <article className="news-card fade-in">
                             <div className="news-card-image">
-                                <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Phòng ngủ" />
+                                <img src="/assets/tintucnoibat/phongngu.webp" alt="Phòng ngủ" />
                                 <div className="news-card-overlay">
                                     <a href="#" className="view-btn"><i className="ti-eye"></i></a>
                                 </div>
@@ -94,7 +94,7 @@ const News: React.FC = () => {
                         
                         <article className="news-card fade-in">
                             <div className="news-card-image">
-                                <img src="https://images.unsplash.com/photo-1577083165243-d731db87fed6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sự kiện" />
+                                <img src="/assets/tintucnoibat/khaitruong-hcm.png" alt="Sự kiện Khai trương" />
                                 <div className="news-card-overlay">
                                     <a href="#" className="view-btn"><i className="ti-eye"></i></a>
                                 </div>

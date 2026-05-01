@@ -31,28 +31,31 @@
     display: flex;
     flex-wrap: wrap;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 60px auto;
     padding: 20px;
-    gap: 30px;
+    gap: 60px;
+    align-items: center; /* Căn giữa theo chiều dọc */
 }
 
 /* Khối chứa hình ảnh */
 .image-box {
     flex: 1;
-    min-width: 300px;
-    max-width: 450px;
+    min-width: 350px;
+    max-width: 500px; /* Giới hạn độ rộng để ảnh không bị quá lố */
+    margin: 0 auto;
 }
 
 .image-box img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15); /* Tăng shadow để đẹp hơn */
+    object-fit: cover;
 }
 
 /* Khối chứa thông tin mô tả */
 .info-box {
-    flex: 2;
+    flex: 1.2; /* Cân đối hơn với phần ảnh (trước đó là 2) */
     min-width: 300px;
     text-align: justify;
 }

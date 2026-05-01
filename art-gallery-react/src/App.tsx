@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import ChangePassword from './pages/ChangePassword';
 import TestPage from './pages/TestPage';
 import ApiTest from './pages/ApiTest';
 import TestAuth from './pages/TestAuth';
@@ -73,6 +74,7 @@ function App() {
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/login" element={<Layout><Login /></Layout>} />
             <Route path="/register" element={<Layout><Register /></Layout>} />
+            <Route path="/change-password" element={<Layout><ChangePassword /></Layout>} />
             <Route path="/cart" element={<Layout><Cart /></Layout>} />
             <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
 

@@ -16,7 +16,7 @@ const About: React.FC = () => {
             {/* Main Content */}
             <div className="about-container">
                 <div className="image-box">
-                    <img src="https://images.unsplash.com/photo-1510137265430-8a4b37012f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Họa sĩ, Kiến trúc sư Lân Vũ" />
+                    <img src="/assets/TrangNgoai/%E1%BA%A2nh%20ch%E1%BB%A5p%20m%C3%A0n%20h%C3%ACnh%202025-04-07%20220932.png" alt="Họa sĩ, Kiến trúc sư Lân Vũ" />
                 </div>
                 <div className="info-box">
                     <h2>Về Nhà Sáng Lập</h2>

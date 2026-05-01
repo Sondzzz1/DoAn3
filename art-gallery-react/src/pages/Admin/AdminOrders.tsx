@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { orderService } from '../../services/orderService';
-import { Order } from '../../types';
+import { adminService } from '../../services/adminService';
+
+interface OrderAdmin {
+    maDonHang: number;
+    ngayDat: string;
+    tongTien: number;
+    trangThai: number;
+    trangThaiText: string;
+}
 
 const AdminOrders: React.FC = () => {
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] = useState<OrderAdmin[]>([]);
     const [loading, setLoading] = useState(true);
-    const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [statusFilter, setStatusFilter] = useState<number>(-1);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -15,7 +22,7 @@ const AdminOrders: React.FC = () => {
     const loadOrders = async () => {
         setLoading(true);
         try {
-            const data = await orderService.getAllOrders();
+            const data = await adminService.getOrders();
             setOrders(data);
         } catch (error) {
             console.error('Error loading orders:', error);
@@ -25,35 +32,15 @@ const AdminOrders: React.FC = () => {
         }
     };
 
-    const handleStatusChange = async (orderId: string, newStatus: number) => {
+    const handleStatusChange = async (orderId: number, newStatus: number) => {
         try {
-            await orderService.updateOrderStatus(parseInt(orderId), newStatus);
+            await adminService.updateOrderStatus(orderId, newStatus);
             alert('Cập nhật trạng thái thành công!');
             loadOrders();
         } catch (error: any) {
             console.error('Error updating status:', error);
             alert(error.message || 'Không thể cập nhật trạng thái');
         }
-    };
-
-    const getStatusText = (status: string) => {
-        const statusMap: Record<string, string> = {
-            pending: 'Chờ xử lý',
-            shipped: 'Đang giao',
-            success: 'Hoàn thành',
-            canceled: 'Đã hủy',
-        };
-        return statusMap[status] || status;
-    };
-
-    const getStatusNumber = (status: string): number => {
-        const statusMap: Record<string, number> = {
-            pending: 0,
-            shipped: 1,
-            success: 2,
-            canceled: 3,
-        };
-        return statusMap[status] || 0;
     };
 
     const formatPrice = (price: number) => {
@@ -68,9 +55,8 @@ const AdminOrders: React.FC = () => {
     };
 
     const filteredOrders = orders.filter(order => {
-        const matchesStatus = statusFilter === 'all' || order.trangThai === statusFilter;
-        const matchesSearch = order.maHD.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            order.tenKH.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesStatus = statusFilter === -1 || order.trangThai === statusFilter;
+        const matchesSearch = order.maDonHang.toString().includes(searchTerm);
         return matchesStatus && matchesSearch;
     });
 
@@ -88,19 +74,19 @@ const AdminOrders: React.FC = () => {
                     <label>Trạng thái:</label>
                     <select
                         value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
+                        onChange={(e) => setStatusFilter(Number(e.target.value))}
                     >
-                        <option value="all">Tất cả ({orders.length})</option>
-                        <option value="pending">Chờ xử lý</option>
-                        <option value="shipped">Đang giao</option>
-                        <option value="success">Hoàn thành</option>
-                        <option value="canceled">Đã hủy</option>
+                        <option value={-1}>Tất cả ({orders.length})</option>
+                        <option value={0}>Chờ xử lý</option>
+                        <option value={1}>Đang giao</option>
+                        <option value={2}>Hoàn thành</option>
+                        <option value={3}>Đã hủy</option>
                     </select>
                 </div>
                 <div className="filter-item">
                     <input
                         type="text"
-                        placeholder="Tìm kiếm đơn hàng..."
+                        placeholder="Mã đơn hàng..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -121,8 +107,6 @@ const AdminOrders: React.FC = () => {
                         <thead>
                             <tr>
                                 <th>Mã đơn</th>
-                                <th>Khách hàng</th>
-                                <th>SĐT</th>
                                 <th>Ngày đặt</th>
                                 <th>Trạng thái</th>
                                 <th>Tổng tiền</th>
@@ -131,21 +115,19 @@ const AdminOrders: React.FC = () => {
                         </thead>
                         <tbody>
                             {filteredOrders.map((order) => (
-                                <tr key={order.id}>
-                                    <td>{order.maHD}</td>
-                                    <td>{order.tenKH}</td>
-                                    <td>{order.phone}</td>
-                                    <td>{formatDate(order.ngayLap)}</td>
+                                <tr key={order.maDonHang}>
+                                    <td>DH{order.maDonHang}</td>
+                                    <td>{formatDate(order.ngayDat)}</td>
                                     <td>
                                         <select
                                             value={order.trangThai}
-                                            onChange={(e) => handleStatusChange(order.id, getStatusNumber(e.target.value))}
-                                            className={`status ${order.trangThai}`}
+                                            onChange={(e) => handleStatusChange(order.maDonHang, Number(e.target.value))}
+                                            className={`status status-${order.trangThai}`}
                                         >
-                                            <option value="pending">Chờ xử lý</option>
-                                            <option value="shipped">Đang giao</option>
-                                            <option value="success">Hoàn thành</option>
-                                            <option value="canceled">Đã hủy</option>
+                                            <option value={0}>Chờ xử lý</option>
+                                            <option value={1}>Đang giao</option>
+                                            <option value={2}>Hoàn thành</option>
+                                            <option value={3}>Đã hủy</option>
                                         </select>
                                     </td>
                                     <td>{formatPrice(order.tongTien)}</td>
@@ -153,7 +135,7 @@ const AdminOrders: React.FC = () => {
                                         <button
                                             title="Xem chi tiết"
                                             onClick={() => {
-                                                alert(`Chi tiết đơn hàng ${order.maHD}:\n\nKhách hàng: ${order.tenKH}\nĐịa chỉ: ${order.address}\nSố sản phẩm: ${order.items.length}`);
+                                                alert(`Chi tiết đơn hàng DH${order.maDonHang}:\nTính năng đang phát triển.`);
                                             }}
                                         >
                                             <i className="ti-eye"></i>

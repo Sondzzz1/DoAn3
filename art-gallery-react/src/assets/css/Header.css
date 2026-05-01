@@ -55,9 +55,15 @@
   border-radius: 4px;
 }
 
-#nav a:hover {
+#nav a:hover,
+#nav a.active {
   color: #ff7b00;
   background: rgba(255, 123, 0, 0.1);
+}
+
+#nav a.active {
+  border-bottom: 2px solid #ff7b00;
+  border-radius: 4px 4px 0 0;
 }
 
 .header-icons {

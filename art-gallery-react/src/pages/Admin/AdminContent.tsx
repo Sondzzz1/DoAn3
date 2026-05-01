@@ -1,51 +1,36 @@
 // Admin Content - Quản lý và duyệt nội dung
 import React, { useState, useEffect } from 'react';
-import { useAppContext } from '../../context/AppContext';
+import { adminService } from '../../services/adminService';
 
 interface Content {
-  id: string;
-  title: string;
-  category: string;
-  author: string;
-  authorRole: 'admin' | 'author';
-  date: string;
-  status: 'pending' | 'approved' | 'rejected';
-  content: string;
+  maBaiViet: number;
+  tieuDe: string;
+  tenHoaSi: string;
+  ngayDang: string;
+  trangThai: number; // 0: pending, 1: approved, 2: rejected
+  trangThaiText: string;
+  noiDung: string;
 }
 
 const AdminContent: React.FC = () => {
   const { artworks } = useAppContext();
   const [contents, setContents] = useState<Content[]>([]);
-  const [filter, setFilter] = useState<string>('all');
+  const [filter, setFilter] = useState<number>(-1); // -1: all
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewingContent, setViewingContent] = useState<Content | null>(null);
 
   useEffect(() => {
-    // Mock data - Trong thực tế sẽ load từ API
-    const mockContents: Content[] = [
-      {
-        id: '1',
-        title: 'Giới thiệu tác phẩm "Vàng Vọng Thinh Không"',
-        category: 'Tác phẩm',
-        author: 'Họa Sĩ Lan Vũ',
-        authorRole: 'author',
-        date: '2026-04-25',
-        status: 'pending',
-        content: 'Tác phẩm được lấy cảm hứng từ...',
-      },
-      {
-        id: '2',
-        title: 'Nghệ thuật đương đại là gì?',
-        category: 'Kiến thức',
-        author: 'Admin',
-        authorRole: 'admin',
-        date: '2026-04-16',
-        status: 'approved',
-        content: 'Nghệ thuật đương đại...',
-      },
-    ];
-    setContents(mockContents);
+    loadContents();
   }, []);
+
+  const loadContents = async () => {
+    try {
+      const data = await adminService.getArticles();
+      setContents(data);
+    } catch (error) {
+      console.error('Lỗi khi tải bài viết:', error);
+    }
+  };
 
   const getStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
@@ -65,30 +50,35 @@ const AdminContent: React.FC = () => {
     return classMap[status] || '';
   };
 
-  const handleApprove = (id: string) => {
+  const handleApprove = async (id: number) => {
     if (window.confirm('Duyệt nội dung này?')) {
-      setContents(contents.map(c => 
-        c.id === id ? { ...c, status: 'approved' as const } : c
-      ));
-      alert('Đã duyệt nội dung!');
+      try {
+        await adminService.approveArticle(id, true);
+        alert('Đã duyệt nội dung!');
+        loadContents();
+      } catch (error) {
+        console.error('Lỗi khi duyệt:', error);
+      }
     }
   };
 
-  const handleReject = (id: string) => {
+  const handleReject = async (id: number) => {
     const reason = prompt('Lý do từ chối:');
     if (reason) {
-      setContents(contents.map(c => 
-        c.id === id ? { ...c, status: 'rejected' as const } : c
-      ));
-      alert('Đã từ chối nội dung!');
-      // TODO: Send notification to author
+      try {
+        await adminService.approveArticle(id, false);
+        alert('Đã từ chối nội dung!');
+        loadContents();
+      } catch (error) {
+        console.error('Lỗi khi từ chối:', error);
+      }
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Xóa nội dung này?')) {
-      setContents(contents.filter(c => c.id !== id));
-      alert('Đã xóa nội dung!');
+      // try { await adminService.deleteArticle(id); loadContents(); } catch...
+      alert('Chưa cấu hình xóa!');
     }
   };
 
@@ -96,9 +86,9 @@ const AdminContent: React.FC = () => {
     setViewingContent(content);
   };
 
-  const filteredContents = filter === 'all' 
+  const filteredContents = filter === -1 
     ? contents 
-    : contents.filter(c => c.status === filter);
+    : contents.filter(c => c.trangThai === filter);
 
   return (
     <div id="content" className="page">
@@ -112,11 +102,11 @@ const AdminContent: React.FC = () => {
       <div className="filter-bar">
         <div className="filter-item">
           <label>Trạng thái:</label>
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="all">Tất cả ({contents.length})</option>
-            <option value="pending">Chờ duyệt ({contents.filter(c => c.status === 'pending').length})</option>
-            <option value="approved">Đã duyệt ({contents.filter(c => c.status === 'approved').length})</option>
-            <option value="rejected">Từ chối ({contents.filter(c => c.status === 'rejected').length})</option>
+          <select value={filter} onChange={(e) => setFilter(Number(e.target.value))}>
+            <option value={-1}>Tất cả ({contents.length})</option>
+            <option value={0}>Chờ duyệt ({contents.filter(c => c.trangThai === 0).length})</option>
+            <option value={1}>Đã duyệt ({contents.filter(c => c.trangThai === 1).length})</option>
+            <option value={2}>Từ chối ({contents.filter(c => c.trangThai === 2).length})</option>
           </select>
         </div>
       </div>
@@ -135,45 +125,33 @@ const AdminContent: React.FC = () => {
           </thead>
           <tbody>
             {filteredContents.map((content) => (
-              <tr key={content.id}>
+              <tr key={content.maBaiViet}>
                 <td>
-                  <strong>{content.title}</strong>
-                  {content.authorRole === 'author' && (
-                    <span style={{ 
-                      marginLeft: '8px', 
-                      padding: '2px 8px', 
-                      background: '#667eea', 
-                      color: 'white', 
-                      borderRadius: '10px', 
-                      fontSize: '0.75rem' 
-                    }}>
-                      Họa sĩ
-                    </span>
-                  )}
+                  <strong>{content.tieuDe}</strong>
                 </td>
-                <td>{content.category}</td>
-                <td>{content.author}</td>
-                <td>{new Date(content.date).toLocaleDateString('vi-VN')}</td>
+                <td>Bài viết</td>
+                <td>{content.tenHoaSi}</td>
+                <td>{new Date(content.ngayDang).toLocaleDateString('vi-VN')}</td>
                 <td>
-                  <span className={`status ${getStatusClass(content.status)}`}>
-                    {getStatusText(content.status)}
+                  <span className={`status ${content.trangThai === 0 ? 'status-pending' : content.trangThai === 1 ? 'status-success' : 'status-canceled'}`}>
+                    {content.trangThaiText || (content.trangThai === 0 ? 'Chờ duyệt' : content.trangThai === 1 ? 'Đã duyệt' : 'Từ chối')}
                   </span>
                 </td>
                 <td>
                   <button onClick={() => handleView(content)} title="Xem">
                     <i className="ti-eye"></i>
                   </button>
-                  {content.status === 'pending' && (
+                  {content.trangThai === 0 && (
                     <>
                       <button 
-                        onClick={() => handleApprove(content.id)}
+                        onClick={() => handleApprove(content.maBaiViet)}
                         style={{ color: 'green', marginLeft: '5px' }}
                         title="Duyệt"
                       >
                         <i className="ti-check"></i>
                       </button>
                       <button 
-                        onClick={() => handleReject(content.id)}
+                        onClick={() => handleReject(content.maBaiViet)}
                         style={{ color: 'orange', marginLeft: '5px' }}
                         title="Từ chối"
                       >
@@ -182,7 +160,7 @@ const AdminContent: React.FC = () => {
                     </>
                   )}
                   <button 
-                    onClick={() => handleDelete(content.id)}
+                    onClick={() => handleDelete(content.maBaiViet)}
                     style={{ color: 'red', marginLeft: '5px' }}
                     title="Xóa"
                   >
@@ -200,12 +178,11 @@ const AdminContent: React.FC = () => {
         <div className="modal show" style={{ display: 'flex' }}>
           <div className="modal-content" style={{ maxWidth: '800px' }}>
             <span className="close" onClick={() => setViewingContent(null)}>&times;</span>
-            <h3>{viewingContent.title}</h3>
+            <h3>{viewingContent.tieuDe}</h3>
             <div style={{ marginBottom: '20px' }}>
-              <p><strong>Chuyên mục:</strong> {viewingContent.category}</p>
-              <p><strong>Người đăng:</strong> {viewingContent.author}</p>
-              <p><strong>Ngày đăng:</strong> {new Date(viewingContent.date).toLocaleDateString('vi-VN')}</p>
-              <p><strong>Trạng thái:</strong> <span className={`status ${getStatusClass(viewingContent.status)}`}>{getStatusText(viewingContent.status)}</span></p>
+              <p><strong>Người đăng:</strong> {viewingContent.tenHoaSi}</p>
+              <p><strong>Ngày đăng:</strong> {new Date(viewingContent.ngayDang).toLocaleDateString('vi-VN')}</p>
+              <p><strong>Trạng thái:</strong> <span className={`status ${viewingContent.trangThai === 0 ? 'status-pending' : viewingContent.trangThai === 1 ? 'status-success' : 'status-canceled'}`}>{viewingContent.trangThaiText}</span></p>
             </div>
             <div style={{ 
               padding: '20px', 
@@ -214,13 +191,13 @@ const AdminContent: React.FC = () => {
               marginBottom: '20px'
             }}>
               <h4>Nội dung:</h4>
-              <p>{viewingContent.content}</p>
+              <p>{viewingContent.noiDung}</p>
             </div>
-            {viewingContent.status === 'pending' && (
+            {viewingContent.trangThai === 0 && (
               <div className="modal-buttons">
                 <button 
                   onClick={() => {
-                    handleApprove(viewingContent.id);
+                    handleApprove(viewingContent.maBaiViet);
                     setViewingContent(null);
                   }}
                   style={{ background: '#28a745' }}
@@ -229,7 +206,7 @@ const AdminContent: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => {
-                    handleReject(viewingContent.id);
+                    handleReject(viewingContent.maBaiViet);
                     setViewingContent(null);
                   }}
                   style={{ background: '#ffc107', color: '#000' }}

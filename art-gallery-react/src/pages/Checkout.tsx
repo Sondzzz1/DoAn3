@@ -89,16 +89,18 @@ const Checkout: React.FC = () => {
   return (
     <div className="checkout-page">
       <div className="checkout-container">
-        <h1>Thanh Toán</h1>
-
         <div className="checkout-content">
-          {/* Thông tin giao hàng */}
+          {/* Thông tin thanh toán */}
           <div className="checkout-form">
-            <h2>Thông Tin Giao Hàng</h2>
+            <div className="section-header">
+              <h2>THÔNG TIN THANH TOÁN</h2>
+              <p className="step-indicator">(7 Bắt buộc)</p>
+            </div>
+
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>
-                  Họ và Tên <span className="required">*</span>
+                  Họ tên <span className="required">*</span>
                 </label>
                 <input
                   type="text"
@@ -112,7 +114,7 @@ const Checkout: React.FC = () => {
 
               <div className="form-group">
                 <label>
-                  Số Điện Thoại <span className="required">*</span>
+                  Số điện thoại <span className="required">*</span>
                 </label>
                 <input
                   type="tel"
@@ -126,7 +128,20 @@ const Checkout: React.FC = () => {
 
               <div className="form-group">
                 <label>
-                  Địa Chỉ Giao Hàng <span className="required">*</span>
+                  Email <span className="required">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={user?.email || ''}
+                  disabled
+                  placeholder="Nhập email"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Địa chỉ <span className="required">*</span>
                 </label>
                 <input
                   type="text"
@@ -134,70 +149,78 @@ const Checkout: React.FC = () => {
                   value={formData.address}
                   onChange={handleChange}
                   required
-                  placeholder="Nhập địa chỉ giao hàng"
+                  placeholder="Nhập địa chỉ"
                 />
               </div>
 
               <div className="form-group">
-                <label>Ghi Chú</label>
+                <label>Ghi chú</label>
                 <textarea
                   name="note"
                   value={formData.note}
                   onChange={handleChange}
                   rows={4}
-                  placeholder="Ghi chú về đơn hàng (tùy chọn)"
+                  placeholder="Ghi chú của bạn"
                 />
               </div>
-
-              <button
-                type="submit"
-                className="btn-submit"
-                disabled={loading}
-              >
-                {loading ? 'Đang xử lý...' : 'Đặt Hàng'}
-              </button>
             </form>
           </div>
 
           {/* Đơn hàng */}
           <div className="order-summary">
-            <h2>Đơn Hàng Của Bạn</h2>
-            
-            <div className="order-items">
-              {cart.map((item) => (
-                <div key={item.id} className="order-item">
-                  <img src={item.image} alt={item.name} />
-                  <div className="item-info">
-                    <h4>{item.name}</h4>
-                    <p>Số lượng: {item.quantity}</p>
-                  </div>
-                  <div className="item-price">
-                    {formatPrice(item.price * item.quantity)}
-                  </div>
-                </div>
-              ))}
+            <div className="section-header">
+              <h2>ĐƠN HÀNG</h2>
             </div>
 
-            <div className="order-total">
-              <div className="total-row">
-                <span>Tạm tính:</span>
-                <span>{formatPrice(cartTotal)}</span>
+            <div className="order-table">
+              <div className="table-header">
+                <span>SẢN PHẨM</span>
+                <span>TỔNG</span>
               </div>
-              <div className="total-row">
-                <span>Phí vận chuyển:</span>
-                <span>Miễn phí</span>
+
+              <div className="order-items">
+                {cart.map((item) => (
+                  <div key={item.id} className="order-row">
+                    <div className="product-info">
+                      <span className="product-name">{item.name}</span>
+                      <span className="product-qty">× {item.quantity}</span>
+                    </div>
+                    <div className="product-price">
+                      {formatPrice(item.price * item.quantity)}
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="total-row final">
-                <strong>Tổng cộng:</strong>
-                <strong className="total-price">{formatPrice(cartTotal)}</strong>
+
+              <div className="order-subtotal">
+                <span>Tổng</span>
+                <span className="price">{formatPrice(cartTotal)}</span>
               </div>
+
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="btn-checkout"
+                disabled={loading}
+              >
+                {loading ? 'Đang xử lý...' : 'ĐẶT HÀNG'}
+              </button>
             </div>
 
-            <div className="payment-info">
-              <h3>Phương Thức Thanh Toán</h3>
-              <p>
-                <i className="ti-money"></i> Thanh toán khi nhận hàng (COD)
-              </p>
+            <div className="payment-methods">
+              <div className="payment-option">
+                <input type="radio" id="cod" name="payment" defaultChecked />
+                <label htmlFor="cod">
+                  Thanh toán tiền mặt khi nhận hàng (Tiền mặt / quẹt thẻ ATM, Visa, Master)
+                </label>
+              </div>
+              <div className="payment-option">
+                <input type="radio" id="transfer" name="payment" />
+                <label htmlFor="transfer">
+                  Thanh toán qua chuyển khoản qua tài khoản ngân hàng (Khuyến dùng)
+                </label>
+                <p className="payment-note">Nhập số tài khoản ngân hàng</p>
+              </div>
             </div>
           </div>
         </div>

@@ -1,58 +1,67 @@
 // Artist Artworks - Quản lý tác phẩm của họa sĩ
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { useAppContext } from '../../context/AppContext';
-import { Artwork } from '../../types';
-import { artworkService } from '../../services/artworkService';
+import { artistDashboardService, TacPhamHoaSiResponse } from '../../services/artistDashboardService';
+import { categoryService } from '../../services/categoryService';
 
 const ArtistArtworks: React.FC = () => {
-  const { user } = useAuth();
-  const { artworks, refreshArtworks } = useAppContext();
-  const [myArtworks, setMyArtworks] = useState<Artwork[]>([]);
+  const [myArtworks, setMyArtworks] = useState<TacPhamHoaSiResponse[]>([]);
+  const [categories, setCategories] = useState<{ id: string, tenLoai: string }[]>([]);
   const [filter, setFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingArtwork, setEditingArtwork] = useState<Artwork | null>(null);
+  const [editingArtwork, setEditingArtwork] = useState<TacPhamHoaSiResponse | null>(null);
+  
   const [formData, setFormData] = useState({
-    tenTranh: '',
-    giaBan: '',
-    danhMuc: 'Tranh sơn dầu' as 'Tranh sơn dầu' | 'Tranh sơn mài' | 'Tranh cổ điển',
-    kichThuoc: '',
-    chatLieu: '',
-    chatLieuKhung: '',
-    soLuongTon: '1',
+    tenTacPham: '',
+    gia: '',
+    maDanhMuc: '',
+    soLuong: '1',
     anhTranh: '',
     moTa: '',
   });
 
-  useEffect(() => {
-    const filtered = artworks.filter(art => art.tacGia === user?.name);
-    setMyArtworks(filtered);
-  }, [artworks, user]);
+  const [loading, setLoading] = useState(true);
 
-  const handleOpenModal = (artwork?: Artwork) => {
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [artworksRes, categoriesRes] = await Promise.all([
+        artistDashboardService.getTacPhamCuaToi(),
+        categoryService.getAllCategories()
+      ]);
+      setMyArtworks(artworksRes);
+      setCategories(categoriesRes);
+    } catch (error) {
+      console.error('Lỗi khi tải dữ liệu tác phẩm:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenModal = (artwork?: TacPhamHoaSiResponse) => {
     if (artwork) {
       setEditingArtwork(artwork);
+      // Tìm mã danh mục dựa trên tên
+      const cat = categories.find(c => c.tenLoai === artwork.tenDanhMuc);
       setFormData({
-        tenTranh: artwork.tenTranh,
-        giaBan: artwork.giaBan.toString(),
-        danhMuc: artwork.danhMuc,
-        kichThuoc: artwork.kichThuoc || '',
-        chatLieu: artwork.chatLieu || '',
-        chatLieuKhung: artwork.chatLieuKhung || '',
-        soLuongTon: artwork.soLuongTon.toString(),
-        anhTranh: artwork.anhTranh,
+        tenTacPham: artwork.tenTacPham,
+        gia: artwork.gia.toString(),
+        maDanhMuc: cat ? cat.id : (categories.length > 0 ? categories[0].id : ''),
+        soLuong: artwork.soLuong.toString(),
+        anhTranh: artwork.hinhAnh || '',
         moTa: artwork.moTa || '',
       });
     } else {
       setEditingArtwork(null);
       setFormData({
-        tenTranh: '',
-        giaBan: '',
-        danhMuc: 'Tranh sơn dầu',
-        kichThuoc: '',
-        chatLieu: '',
-        chatLieuKhung: '',
-        soLuongTon: '1',
+        tenTacPham: '',
+        gia: '',
+        maDanhMuc: categories.length > 0 ? categories[0].id : '',
+        soLuong: '1',
         anhTranh: '',
         moTa: '',
       });
@@ -63,40 +72,36 @@ const ArtistArtworks: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const artworkData = {
-        tenTranh: formData.tenTranh,
-        giaBan: parseFloat(formData.giaBan),
-        danhMuc: formData.danhMuc,
-        tacGia: user?.name || '',
-        kichThuoc: formData.kichThuoc,
-        chatLieu: formData.chatLieu,
-        chatLieuKhung: formData.chatLieuKhung,
-        soLuongTon: parseInt(formData.soLuongTon),
-        anhTranh: formData.anhTranh,
+      const payload = {
+        tenTacPham: formData.tenTacPham,
+        gia: parseFloat(formData.gia),
+        maDanhMuc: formData.maDanhMuc ? parseInt(formData.maDanhMuc) : undefined,
+        soLuong: parseInt(formData.soLuong),
+        hinhAnh: formData.anhTranh,
         moTa: formData.moTa,
       };
 
       if (editingArtwork) {
-        await artworkService.updateArtwork({ id: editingArtwork.id, ...artworkData });
+        await artistDashboardService.capNhatTacPham(editingArtwork.maTacPham, payload);
         alert('Cập nhật tác phẩm thành công!');
       } else {
-        await artworkService.createArtwork(artworkData);
+        await artistDashboardService.taoTacPham(payload);
         alert('Thêm tác phẩm thành công!');
       }
       
       setIsModalOpen(false);
-      refreshArtworks();
+      loadData();
     } catch (error: any) {
       alert(error.message || 'Có lỗi xảy ra');
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Bạn có chắc muốn xóa tác phẩm này?')) {
       try {
-        await artworkService.deleteArtwork(id);
+        await artistDashboardService.xoaTacPham(id);
         alert('Xóa tác phẩm thành công!');
-        refreshArtworks();
+        loadData();
       } catch (error: any) {
         alert(error.message || 'Không thể xóa tác phẩm');
       }
@@ -110,9 +115,19 @@ const ArtistArtworks: React.FC = () => {
     }).format(price);
   };
 
-  const filteredArtworks = filter === 'all' 
-    ? myArtworks 
-    : myArtworks.filter(art => art.danhMuc === filter);
+  let filteredArtworks = myArtworks;
+  
+  if (filter !== 'all') {
+    filteredArtworks = filteredArtworks.filter(art => art.tenDanhMuc === filter);
+  }
+
+  if (searchQuery.trim() !== '') {
+      filteredArtworks = filteredArtworks.filter(art => 
+          art.tenTacPham.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+  }
+
+  if (loading) return <div className="page" style={{ padding: '20px' }}>Đang tải dữ liệu...</div>;
 
   return (
     <div id="art" className="page">
@@ -123,23 +138,26 @@ const ArtistArtworks: React.FC = () => {
         </button>
       </div>
 
-      <div className="filter-bar">
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="all">Tất cả ({myArtworks.length})</option>
-          <option value="Tranh sơn dầu">Tranh sơn dầu</option>
-          <option value="Tranh sơn mài">Tranh sơn mài</option>
-          <option value="Tranh cổ điển">Tranh cổ điển</option>
+      <div className="filter-bar" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <input 
+          type="text" 
+          placeholder="Tìm kiếm theo tên..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ padding: '8px 12px', border: '1px solid #ddd', borderRadius: '5px', flex: 1 }}
+        />
+        <select value={filter} onChange={(e) => setFilter(e.target.value)} style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '5px' }}>
+          <option value="all">Tất cả danh mục ({myArtworks.length})</option>
+          {categories.map(c => (
+              <option key={c.id} value={c.tenLoai}>{c.tenLoai}</option>
+          ))}
         </select>
       </div>
 
       {filteredArtworks.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', background: '#fff', borderRadius: '10px' }}>
           <i className="ti-image" style={{ fontSize: '4rem', color: '#ddd' }}></i>
-          <h3>Chưa có tác phẩm nào</h3>
-          <p>Hãy thêm tác phẩm đầu tiên của bạn!</p>
-          <button className="add-btn" onClick={() => handleOpenModal()}>
-            <i className="ti-plus"></i> Thêm Tác Phẩm
-          </button>
+          <h3>Không tìm thấy tác phẩm nào</h3>
         </div>
       ) : (
         <div className="table-container">
@@ -156,24 +174,28 @@ const ArtistArtworks: React.FC = () => {
             </thead>
             <tbody>
               {filteredArtworks.map(artwork => (
-                <tr key={artwork.id}>
+                <tr key={artwork.maTacPham}>
                   <td>
-                    <img 
-                      src={artwork.anhTranh} 
-                      alt={artwork.tenTranh}
-                      style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '5px' }}
-                    />
+                    {artwork.hinhAnh ? (
+                        <img 
+                            src={artwork.hinhAnh} 
+                            alt={artwork.tenTacPham}
+                            style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '5px' }}
+                        />
+                    ) : (
+                        <div style={{ width: '80px', height: '80px', backgroundColor: '#f0f0f0', borderRadius: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Img</div>
+                    )}
                   </td>
-                  <td><strong>{artwork.tenTranh}</strong></td>
-                  <td>{artwork.danhMuc}</td>
-                  <td>{formatPrice(artwork.giaBan)}</td>
-                  <td>{artwork.soLuongTon}</td>
+                  <td><strong>{artwork.tenTacPham}</strong></td>
+                  <td>{artwork.tenDanhMuc}</td>
+                  <td>{formatPrice(artwork.gia)}</td>
+                  <td>{artwork.soLuong}</td>
                   <td>
                     <button onClick={() => handleOpenModal(artwork)} title="Sửa">
                       <i className="ti-pencil"></i>
                     </button>
                     <button 
-                      onClick={() => handleDelete(artwork.id)}
+                      onClick={() => handleDelete(artwork.maTacPham)}
                       style={{ color: 'red', marginLeft: '5px' }}
                       title="Xóa"
                     >
@@ -200,8 +222,8 @@ const ArtistArtworks: React.FC = () => {
                     <label>Tên tranh: <span style={{ color: 'red' }}>*</span></label>
                     <input 
                       type="text" 
-                      value={formData.tenTranh}
-                      onChange={(e) => setFormData({ ...formData, tenTranh: e.target.value })}
+                      value={formData.tenTacPham}
+                      onChange={(e) => setFormData({ ...formData, tenTacPham: e.target.value })}
                       placeholder="Ví dụ: Sang Đông" 
                       required 
                     />
@@ -211,8 +233,8 @@ const ArtistArtworks: React.FC = () => {
                     <label>Giá bán (VNĐ): <span style={{ color: 'red' }}>*</span></label>
                     <input 
                       type="number" 
-                      value={formData.giaBan}
-                      onChange={(e) => setFormData({ ...formData, giaBan: e.target.value })}
+                      value={formData.gia}
+                      onChange={(e) => setFormData({ ...formData, gia: e.target.value })}
                       placeholder="4500000" 
                       required 
                     />
@@ -221,66 +243,35 @@ const ArtistArtworks: React.FC = () => {
                   <div className="form-group">
                     <label>Danh mục: <span style={{ color: 'red' }}>*</span></label>
                     <select 
-                      value={formData.danhMuc}
-                      onChange={(e) => setFormData({ ...formData, danhMuc: e.target.value as any })}
+                      value={formData.maDanhMuc}
+                      onChange={(e) => setFormData({ ...formData, maDanhMuc: e.target.value })}
                       required
                     >
-                      <option value="Tranh sơn dầu">Tranh sơn dầu</option>
-                      <option value="Tranh sơn mài">Tranh sơn mài</option>
-                      <option value="Tranh cổ điển">Tranh cổ điển</option>
+                      {categories.map(c => (
+                          <option key={c.id} value={c.id}>{c.tenLoai}</option>
+                      ))}
                     </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Kích thước:</label>
-                    <input 
-                      type="text" 
-                      value={formData.kichThuoc}
-                      onChange={(e) => setFormData({ ...formData, kichThuoc: e.target.value })}
-                      placeholder="Ví dụ: 60x80 cm" 
-                    />
                   </div>
                 </div>
 
                 <div className="form-column">
                   <div className="form-group">
-                    <label>Chất liệu tranh:</label>
-                    <input 
-                      type="text" 
-                      value={formData.chatLieu}
-                      onChange={(e) => setFormData({ ...formData, chatLieu: e.target.value })}
-                      placeholder="Sơn dầu, toan vải..." 
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Chất liệu khung:</label>
-                    <input 
-                      type="text" 
-                      value={formData.chatLieuKhung}
-                      onChange={(e) => setFormData({ ...formData, chatLieuKhung: e.target.value })}
-                      placeholder="Khung gỗ sồi..." 
-                    />
-                  </div>
-
-                  <div className="form-group">
                     <label>Số lượng: <span style={{ color: 'red' }}>*</span></label>
                     <input 
                       type="number" 
-                      value={formData.soLuongTon}
-                      onChange={(e) => setFormData({ ...formData, soLuongTon: e.target.value })}
+                      value={formData.soLuong}
+                      onChange={(e) => setFormData({ ...formData, soLuong: e.target.value })}
                       required 
                     />
                   </div>
 
                   <div className="form-group">
-                    <label>Link ảnh: <span style={{ color: 'red' }}>*</span></label>
+                    <label>Link ảnh:</label>
                     <input 
                       type="text" 
                       value={formData.anhTranh}
                       onChange={(e) => setFormData({ ...formData, anhTranh: e.target.value })}
                       placeholder="URL hình ảnh" 
-                      required 
                     />
                   </div>
                 </div>

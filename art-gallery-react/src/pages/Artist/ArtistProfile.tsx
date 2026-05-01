@@ -1,73 +1,73 @@
 // Artist Profile - Quản lý hồ sơ họa sĩ
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { artistDashboardService, HoSoHoaSiResponse } from '../../services/artistDashboardService';
 
 interface ProfileData {
   name: string;
-  email: string;
-  phone: string;
-  address: string;
   bio: string;
-  specialization: string;
-  website: string;
-  facebook: string;
-  instagram: string;
+  avatarUrl: string;
 }
 
 const ArtistProfile: React.FC = () => {
   const { user } = useAuth();
+  const [profileInfo, setProfileInfo] = useState<HoSoHoaSiResponse | null>(null);
   const [formData, setFormData] = useState<ProfileData>({
     name: '',
-    email: '',
-    phone: '',
-    address: '',
     bio: '',
-    specialization: '',
-    website: '',
-    facebook: '',
-    instagram: '',
+    avatarUrl: ''
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      const stored = localStorage.getItem(`user_account_${user.email}`);
-      if (stored) {
-        const userData = JSON.parse(stored);
-        setFormData({
-          name: userData.name || '',
-          email: userData.email || '',
-          phone: userData.phone || '',
-          address: userData.address || '',
-          bio: userData.bio || '',
-          specialization: userData.specialization || '',
-          website: userData.website || '',
-          facebook: userData.facebook || '',
-          instagram: userData.instagram || '',
-        });
-      }
-    }
-  }, [user]);
+    loadProfile();
+  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const loadProfile = async () => {
+    try {
+      setLoading(true);
+      const data = await artistDashboardService.getHoSo();
+      setProfileInfo(data);
+      setFormData({
+        name: data.tenHoaSi || '',
+        bio: data.tieuSu || '',
+        avatarUrl: data.anhDaiDien || ''
+      });
+    } catch (error) {
+      console.error('Lỗi khi tải hồ sơ:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (user) {
-      const updatedUser = {
-        ...user,
-        ...formData,
-      };
-      localStorage.setItem(`user_account_${user.email}`, JSON.stringify(updatedUser));
+    try {
+      await artistDashboardService.capNhatHoSo({
+        tenHoaSi: formData.name,
+        tieuSu: formData.bio
+      });
+      // Nếu có upload avatar mới (URL mới), có thể gọi uploadAvatar riêng
+      if (formData.avatarUrl && formData.avatarUrl !== profileInfo?.anhDaiDien) {
+        await artistDashboardService.uploadAvatar(formData.avatarUrl);
+      }
       setIsEditing(false);
       alert('Cập nhật hồ sơ thành công!');
+      loadProfile(); // reload data
+    } catch (error: any) {
+      alert(error.message || 'Lỗi cập nhật hồ sơ');
     }
   };
+
+  if (loading) return <div className="page" style={{ padding: '20px' }}>Đang tải thông tin...</div>;
 
   return (
     <div id="profile" className="page">
@@ -83,26 +83,41 @@ const ArtistProfile: React.FC = () => {
 
       <div style={{ background: 'white', borderRadius: '10px', padding: '30px' }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', paddingBottom: '30px', borderBottom: '1px solid #eee' }}>
-          <div style={{ 
-            width: '100px', 
-            height: '100px', 
-            borderRadius: '50%', 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontSize: '2.5rem',
-            fontWeight: 'bold',
-            marginRight: '20px'
-          }}>
-            {user?.name?.charAt(0).toUpperCase()}
-          </div>
+          {profileInfo?.anhDaiDien ? (
+             <img src={profileInfo.anhDaiDien} alt="Avatar" style={{
+                width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginRight: '20px'
+             }} />
+          ) : (
+            <div style={{ 
+              width: '100px', 
+              height: '100px', 
+              borderRadius: '50%', 
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: '2.5rem',
+              fontWeight: 'bold',
+              marginRight: '20px'
+            }}>
+              {formData.name.charAt(0).toUpperCase() || 'H'}
+            </div>
+          )}
+          
           <div>
             <h2 style={{ margin: '0 0 5px 0' }}>{formData.name}</h2>
             <p style={{ margin: '0', color: '#666' }}>
-              <i className="ti-palette"></i> {formData.specialization || 'Họa sĩ'}
+              <i className="ti-palette"></i> Họa sĩ
             </p>
+            <div style={{ marginTop: '10px', display: 'flex', gap: '15px' }}>
+               <span style={{ background: '#f0f0f0', padding: '5px 10px', borderRadius: '5px', fontSize: '13px' }}>
+                 Tác phẩm: <strong>{profileInfo?.soTacPham || 0}</strong>
+               </span>
+               <span style={{ background: '#f0f0f0', padding: '5px 10px', borderRadius: '5px', fontSize: '13px' }}>
+                 Tổng doanh thu: <strong>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(profileInfo?.tongDoanhThu || 0)}</strong>
+               </span>
+            </div>
           </div>
         </div>
 
@@ -111,7 +126,7 @@ const ArtistProfile: React.FC = () => {
             <h3 style={{ marginBottom: '20px', color: '#333' }}>Thông Tin Cơ Bản</h3>
             <div className="form-grid">
               <div className="form-group">
-                <label>Họ Tên: <span style={{ color: 'red' }}>*</span></label>
+                <label>Tên Họa Sĩ: <span style={{ color: 'red' }}>*</span></label>
                 <input
                   type="text"
                   name="name"
@@ -122,57 +137,16 @@ const ArtistProfile: React.FC = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Email: <span style={{ color: 'red' }}>*</span></label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  disabled
-                  style={{ background: '#f5f5f5' }}
-                />
-              </div>
-              <div className="form-group">
-                <label>Số Điện Thoại:</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  placeholder="0123456789"
-                />
-              </div>
-              <div className="form-group">
-                <label>Địa Chỉ:</label>
+                <label>URL Ảnh Đại Diện:</label>
                 <input
                   type="text"
-                  name="address"
-                  value={formData.address}
+                  name="avatarUrl"
+                  value={formData.avatarUrl}
                   onChange={handleChange}
                   disabled={!isEditing}
-                  placeholder="Hà Nội, Việt Nam"
+                  placeholder="Link ảnh (https://...)"
                 />
               </div>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: '30px' }}>
-            <h3 style={{ marginBottom: '20px', color: '#333' }}>Chuyên Môn</h3>
-            <div className="form-group">
-              <label>Lĩnh vực chuyên môn:</label>
-              <select
-                name="specialization"
-                value={formData.specialization}
-                onChange={handleChange}
-                disabled={!isEditing}
-              >
-                <option value="">Chọn lĩnh vực</option>
-                <option value="Tranh sơn dầu">Tranh sơn dầu</option>
-                <option value="Tranh sơn mài">Tranh sơn mài</option>
-                <option value="Tranh cổ điển">Tranh cổ điển</option>
-                <option value="Tranh đương đại">Tranh đương đại</option>
-                <option value="Tranh trừu tượng">Tranh trừu tượng</option>
-              </select>
             </div>
           </div>
 
@@ -187,45 +161,6 @@ const ArtistProfile: React.FC = () => {
                 rows={6}
                 placeholder="Viết về bản thân, phong cách nghệ thuật, kinh nghiệm..."
               />
-            </div>
-          </div>
-
-          <div style={{ marginBottom: '30px' }}>
-            <h3 style={{ marginBottom: '20px', color: '#333' }}>Mạng Xã Hội</h3>
-            <div className="form-grid">
-              <div className="form-group">
-                <label><i className="ti-world"></i> Website:</label>
-                <input
-                  type="url"
-                  name="website"
-                  value={formData.website}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  placeholder="https://..."
-                />
-              </div>
-              <div className="form-group">
-                <label><i className="ti-facebook"></i> Facebook:</label>
-                <input
-                  type="url"
-                  name="facebook"
-                  value={formData.facebook}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  placeholder="https://facebook.com/..."
-                />
-              </div>
-              <div className="form-group">
-                <label><i className="ti-instagram"></i> Instagram:</label>
-                <input
-                  type="url"
-                  name="instagram"
-                  value={formData.instagram}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  placeholder="https://instagram.com/..."
-                />
-              </div>
             </div>
           </div>
 

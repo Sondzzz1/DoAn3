@@ -1,10 +1,10 @@
 // Admin Categories - Quản lý danh mục tranh
 import React, { useState, useEffect } from 'react';
-import { categoryService } from '../../services/categoryService';
+import { adminService } from '../../services/adminService';
 
 interface Category {
-  id: string;
-  tenLoai: string;
+  maDanhMuc: number;
+  tenDanhMuc: string;
   moTa?: string;
 }
 
@@ -14,7 +14,7 @@ const AdminCategories: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState({
-    tenLoai: '',
+    tenDanhMuc: '',
     moTa: '',
   });
 
@@ -25,7 +25,7 @@ const AdminCategories: React.FC = () => {
   const loadCategories = async () => {
     setLoading(true);
     try {
-      const data = await categoryService.getAllCategories();
+      const data = await adminService.getCategories();
       setCategories(data);
     } catch (error) {
       console.error('Error loading categories:', error);
@@ -39,13 +39,13 @@ const AdminCategories: React.FC = () => {
     if (category) {
       setEditingCategory(category);
       setFormData({
-        tenLoai: category.tenLoai,
+        tenDanhMuc: category.tenDanhMuc,
         moTa: category.moTa || '',
       });
     } else {
       setEditingCategory(null);
       setFormData({
-        tenLoai: '',
+        tenDanhMuc: '',
         moTa: '',
       });
     }
@@ -56,7 +56,7 @@ const AdminCategories: React.FC = () => {
     setIsModalOpen(false);
     setEditingCategory(null);
     setFormData({
-      tenLoai: '',
+      tenDanhMuc: '',
       moTa: '',
     });
   };
@@ -73,16 +73,15 @@ const AdminCategories: React.FC = () => {
     try {
       if (editingCategory) {
         // Update
-        await categoryService.updateCategory({
-          id: editingCategory.id,
-          tenLoai: formData.tenLoai,
+        await adminService.updateCategory(editingCategory.maDanhMuc, {
+          tenDanhMuc: formData.tenDanhMuc,
           moTa: formData.moTa,
         });
         alert('Cập nhật danh mục thành công!');
       } else {
         // Create
-        await categoryService.createCategory({
-          tenLoai: formData.tenLoai,
+        await adminService.createCategory({
+          tenDanhMuc: formData.tenDanhMuc,
           moTa: formData.moTa,
         });
         alert('Thêm danh mục thành công!');
@@ -95,10 +94,10 @@ const AdminCategories: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
+  const handleDelete = async (id: number, name: string) => {
     if (window.confirm(`Bạn có chắc muốn xóa danh mục "${name}"?\nLưu ý: Không thể xóa nếu đã có tranh thuộc danh mục này.`)) {
       try {
-        await categoryService.deleteCategory(id);
+        await adminService.deleteCategory(id);
         alert('Xóa danh mục thành công!');
         loadCategories();
       } catch (error: any) {
@@ -137,8 +136,8 @@ const AdminCategories: React.FC = () => {
             </thead>
             <tbody>
               {categories.map((category) => (
-                <tr key={category.id}>
-                  <td><strong>{category.tenLoai}</strong></td>
+                <tr key={category.maDanhMuc}>
+                  <td><strong>{category.tenDanhMuc}</strong></td>
                   <td>{category.moTa || 'Chưa có mô tả'}</td>
                   <td>
                     <button 
@@ -149,7 +148,7 @@ const AdminCategories: React.FC = () => {
                     </button>
                     <button 
                       style={{ color: 'red', marginLeft: '5px' }}
-                      onClick={() => handleDelete(category.id, category.tenLoai)}
+                      onClick={() => handleDelete(category.maDanhMuc, category.tenDanhMuc)}
                       title="Xóa"
                     >
                       <i className="ti-trash"></i>
@@ -173,8 +172,8 @@ const AdminCategories: React.FC = () => {
                 <label>Tên Danh Mục: <span style={{ color: 'red' }}>*</span></label>
                 <input
                   type="text"
-                  name="tenLoai"
-                  value={formData.tenLoai}
+                  name="tenDanhMuc"
+                  value={formData.tenDanhMuc}
                   onChange={handleChange}
                   placeholder="VD: Tranh sơn dầu"
                   required

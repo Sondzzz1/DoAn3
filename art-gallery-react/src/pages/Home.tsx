@@ -73,6 +73,7 @@ const Home: React.FC = () => {
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            style={{ borderRadius: '8px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}
           ></iframe>
         </div>
         <div className="intro-content">
