@@ -127,9 +127,133 @@
   color: #333;
 }
 
+/* Price Section */
+.price-section {
+  margin: 20px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.price-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.price-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+/* Quantity Section */
+.quantity-section {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.quantity-section label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.qty-btn {
+  width: 35px;
+  height: 35px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background: #f5f5f5;
+  color: #ff7b00;
+}
+
+.quantity-controls input {
+  width: 50px;
+  height: 35px;
+  border: none;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.quantity-controls input:focus {
+  outline: none;
+}
+
 /* Action Buttons */
 .detail-actions-group {
   margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-buy-main {
+  width: 100%;
+  padding: 15px;
+  background: #ff7b00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.btn-buy-main:hover {
+  background: #e66a00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+}
+
+.btn-add-cart {
+  width: 100%;
+  padding: 15px;
+  background: white;
+  color: #ff7b00;
+  border: 2px solid #ff7b00;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.btn-add-cart:hover {
+  background: #ff7b00;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
 }
 
 .btn-contact-main {
@@ -239,7 +363,7 @@
 }
 
 .service-text h4 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: #333;
   margin-bottom: 8px;
@@ -247,7 +371,7 @@
 }
 
 .service-text p {
-  font-size: 13px;
+  font-size: 16px;
   color: #666;
   line-height: 1.6;
   margin: 0;

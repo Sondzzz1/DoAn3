@@ -150,10 +150,60 @@ const ArtworkDetail: React.FC = () => {
               <p><strong>Chất liệu tranh:</strong> {artwork.chatLieu || 'Sơn dầu trên vải'}</p>
               <p><strong>Chất liệu khung:</strong> {artwork.chatLieuKhung || 'Khung gỗ sồi cao cấp'}</p>
               <p><strong>Kích thước tranh:</strong> {artwork.kichThuoc || 'Chưa rõ'}</p>
+              <p><strong>Tình trạng:</strong> {artwork.soLuongTon > 0 ? `Còn hàng (${artwork.soLuongTon})` : 'Hết hàng'}</p>
+            </div>
+
+            <div className="price-section">
+              <div className="price-label">Giá bán:</div>
+              <div className="price-value">{formatPrice(artwork.giaBan)}</div>
+            </div>
+
+            <div className="quantity-section">
+              <label>Số lượng:</label>
+              <div className="quantity-controls">
+                <button 
+                  className="qty-btn"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={artwork.soLuongTon === 0}
+                >
+                  -
+                </button>
+                <input 
+                  type="number" 
+                  value={quantity}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value) || 1;
+                    setQuantity(Math.min(artwork.soLuongTon, Math.max(1, val)));
+                  }}
+                  min="1"
+                  max={artwork.soLuongTon}
+                  disabled={artwork.soLuongTon === 0}
+                />
+                <button 
+                  className="qty-btn"
+                  onClick={() => setQuantity(Math.min(artwork.soLuongTon, quantity + 1))}
+                  disabled={artwork.soLuongTon === 0 || quantity >= artwork.soLuongTon}
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             <div className="detail-actions-group">
-              <button className="btn-contact-main">Liên hệ</button>
+              <button 
+                className="btn-buy-main" 
+                onClick={handleBuyNow}
+                disabled={artwork.soLuongTon === 0}
+              >
+                {artwork.soLuongTon > 0 ? 'Mua ngay' : 'Đã hết hàng'}
+              </button>
+              <button 
+                className="btn-add-cart" 
+                onClick={handleAddToCart}
+                disabled={artwork.soLuongTon === 0}
+              >
+                Thêm vào giỏ hàng
+              </button>
               
               <div className="social-chats">
                 <a 

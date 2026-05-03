@@ -86,7 +86,9 @@ export const orderService = {
       return response.data.message;
     } catch (error: any) {
       console.error('Error creating order:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi tạo đơn hàng');
+      const serverError = error.response?.data;
+      const errorMessage = serverError?.error || serverError?.message || 'Lỗi khi tạo đơn hàng';
+      throw new Error(errorMessage);
     }
   },
 
