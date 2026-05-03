@@ -1,0 +1,56 @@
+/* Phần mô tả tác phẩm full-width bên dưới */
+.artwork-full-description {
+  margin-top: 60px;
+  border-top: 1px solid #eee;
+  padding-top: 40px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.description-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 250px;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #ff6b35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff6b35;
+  font-size: 20px;
+}
+
+.info-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.description-content {
+  flex: 1;
+}
+
+.description-content p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  margin: 0;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .artwork-full-description {
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+  }
+}

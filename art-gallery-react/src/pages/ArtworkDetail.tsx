@@ -153,28 +153,35 @@ const ArtworkDetail: React.FC = () => {
             </div>
 
             <div className="detail-actions-group">
+              <button className="btn-contact-main">Liên hệ</button>
+              
               <div className="social-chats">
-                <button className="btn-zalo">
+                <a 
+                  href="https://zalo.me/0982895121" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn-zalo"
+                  style={{ textDecoration: 'none' }}
+                >
                   <div className="btn-content">
                     <span className="btn-title"><i className="ti-comment-alt"></i> Chat zalo</span>
                     <span className="btn-subtitle">Giải đáp và hỗ trợ ngay tức thì</span>
                   </div>
-                </button>
-                <button className="btn-facebook">
+                </a>
+                <a 
+                  href="https://www.facebook.com/son.phanduy.100?mibextid=wwXIfr" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn-facebook"
+                  style={{ textDecoration: 'none' }}
+                >
                   <div className="btn-content">
                     <span className="btn-title"><i className="ti-facebook"></i> Chat Facebook</span>
                     <span className="btn-subtitle">Giải đáp và hỗ trợ ngay tức thì</span>
                   </div>
-                </button>
+                </a>
               </div>
             </div>
-
-            {artwork.moTa && (
-              <div className="artwork-description-section">
-                <h3>Mô tả tác phẩm</h3>
-                <p>{artwork.moTa}</p>
-              </div>
-            )}
           </div>
 
           {/* Cột phải: Thông tin dịch vụ */}
@@ -210,6 +217,19 @@ const ArtworkDetail: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Phần mô tả tác phẩm - Full width bên dưới */}
+        {artwork.moTa && (
+          <div className="artwork-full-description">
+            <div className="description-header">
+              
+              <h2 className="info-title">THÔNG TIN</h2>
+            </div>
+            <div className="description-content">
+              <p>"{artwork.tenTranh}" {artwork.moTa}</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
