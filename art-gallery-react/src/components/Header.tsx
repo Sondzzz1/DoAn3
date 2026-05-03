@@ -69,7 +69,11 @@ const Header: React.FC = () => {
                     👤 {user?.name}
                   </Link>
                   {(user?.role === 'admin' || user?.role === 'author') && (
-                    <Link to="/admin" className="admin-link" title={user?.role === 'author' ? 'Trang Tác giả' : 'Trang Quản trị'}>
+                    <Link 
+                      to={user?.role === 'author' ? "/artist" : "/admin"} 
+                      className="admin-link" 
+                      title={user?.role === 'author' ? 'Trang Tác giả' : 'Trang Quản trị'}
+                    >
                       ⚙️
                     </Link>
                   )}

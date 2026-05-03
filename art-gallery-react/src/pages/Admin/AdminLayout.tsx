@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import './Admin.css';
 
@@ -8,10 +8,10 @@ const AdminLayout: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Nếu người dùng là tác giả và vào thẳng URL '/admin', chuyển hướng họ đến '/admin/profile'
+    // Nếu người dùng là tác giả và vào nhầm URL '/admin', chuyển hướng họ đến '/artist'
     useEffect(() => {
-        if (isAuthor && location.pathname === '/admin') {
-            navigate('/admin/profile', { replace: true });
+        if (isAuthor && location.pathname.startsWith('/admin')) {
+            navigate('/artist', { replace: true });
         }
         
         // Nếu người dùng chưa đăng nhập hoặc là user thường đang cố gắng vào admin (nên nằm trong hook hoặc route guard, nhưng ta thêm bảo hiểm ở đây)
@@ -105,11 +105,11 @@ const AdminLayout: React.FC = () => {
                         </NavLink>
                     )}
                     
-                    <NavLink to="/">
+                    <Link to="/">
                         <li className="sidebar-link">
                             <i className="ti-world"></i> Về Trang Chủ
                         </li>
-                    </NavLink>
+                    </Link>
                     <li className="logout-btn" onClick={handleLogout}>
                         <i className="ti-power-off"></i> Đăng xuất
                     </li>

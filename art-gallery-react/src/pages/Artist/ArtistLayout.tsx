@@ -1,6 +1,6 @@
 // Artist Layout - Layout cho trang họa sĩ (Giống Admin)
 import React, { useEffect } from 'react';
-import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import '../Admin/Admin.css'; // Dùng chung CSS với Admin
 
@@ -60,11 +60,11 @@ const ArtistLayout: React.FC = () => {
             </li>
           </NavLink>
 
-          <NavLink to="/">
+          <Link to="/">
             <li className="sidebar-link">
               <i className="ti-world"></i> Về Trang Chủ
             </li>
-          </NavLink>
+          </Link>
 
           <li className="logout-btn" onClick={handleLogout}>
             <i className="ti-power-off"></i> Đăng Xuất
