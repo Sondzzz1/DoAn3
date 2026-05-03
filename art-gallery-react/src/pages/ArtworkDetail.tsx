@@ -44,7 +44,7 @@ const ArtworkDetail: React.FC = () => {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!isAuthenticated) {
       alert('Vui lòng đăng nhập để thêm vào giỏ hàng!');
       navigate('/login');
@@ -53,7 +53,7 @@ const ArtworkDetail: React.FC = () => {
 
     if (!artwork) return;
 
-    addToCart({
+    await addToCart({
       id: artwork.id,
       name: artwork.tenTranh,
       price: artwork.giaBan,
@@ -64,7 +64,7 @@ const ArtworkDetail: React.FC = () => {
     alert('Đã thêm vào giỏ hàng!');
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!isAuthenticated) {
       alert('Vui lòng đăng nhập để mua hàng!');
       navigate('/login');
@@ -73,7 +73,7 @@ const ArtworkDetail: React.FC = () => {
 
     if (!artwork) return;
 
-    addToCart({
+    await addToCart({
       id: artwork.id,
       name: artwork.tenTranh,
       price: artwork.giaBan,
@@ -112,108 +112,103 @@ const ArtworkDetail: React.FC = () => {
 
   return (
     <div className="artwork-detail-page">
-      <div className="detail-container">
-        <div className="detail-image">
-          <img
-            src={artwork.anhTranh}
-            alt={artwork.tenTranh}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600?text=No+Image';
-            }}
-          />
+      <div className="detail-container-wrapper">
+        {/* Breadcrumbs */}
+        <div className="breadcrumbs">
+          <span>Tác phẩm</span> / <span>Tranh theo chủ đề</span> / <span>{artwork.danhMuc}</span>
         </div>
 
-        <div className="detail-info">
-          <h1>{artwork.tenTranh}</h1>
-          <p className="category">{artwork.danhMuc}</p>
-          <p className="author">Họa sĩ: {artwork.tacGia}</p>
-          
-          <div className="price-section">
-            <span className="price">{formatPrice(artwork.giaBan)}</span>
-          </div>
-
-          <div className="info-grid">
-            {artwork.kichThuoc && (
-              <div className="info-item">
-                <strong>Kích thước:</strong>
-                <span>{artwork.kichThuoc}</span>
+        <div className="detail-layout">
+          {/* Cột trái: Ảnh và Thumbnails */}
+          <div className="detail-media">
+            <div className="main-image">
+              <img
+                src={artwork.anhTranh}
+                alt={artwork.tenTranh}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600?text=No+Image';
+                }}
+              />
+              <div className="zoom-icon">
+                <i className="ti-fullscreen"></i>
               </div>
-            )}
-            {artwork.chatLieu && (
-              <div className="info-item">
-                <strong>Chất liệu:</strong>
-                <span>{artwork.chatLieu}</span>
-              </div>
-            )}
-            {artwork.chatLieuKhung && (
-              <div className="info-item">
-                <strong>Khung tranh:</strong>
-                <span>{artwork.chatLieuKhung}</span>
-              </div>
-            )}
-            <div className="info-item">
-              <strong>Tình trạng:</strong>
-              <span className={artwork.soLuongTon > 0 ? 'in-stock' : 'out-of-stock'}>
-                {artwork.soLuongTon > 0 ? `Còn hàng (${artwork.soLuongTon})` : 'Hết hàng'}
-              </span>
+            </div>
+            <div className="thumbnails">
+              <img src={artwork.anhTranh} alt="thumbnail" className="active" />
+              <img src={artwork.anhTranh} alt="thumbnail" />
+              <img src={artwork.anhTranh} alt="thumbnail" />
             </div>
           </div>
 
-          {artwork.soLuongTon > 0 && (
-            <div className="quantity-section">
-              <label>Số lượng:</label>
-              <div className="quantity-control">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  disabled={quantity <= 1}
-                >
-                  -
+          {/* Cột giữa: Thông tin chi tiết */}
+          <div className="detail-info-main">
+            <h1 className="artwork-title">{artwork.tenTranh}</h1>
+            
+            <div className="info-meta">
+              <p><strong>Các chuyên mục:</strong> {artwork.danhMuc}</p>
+              <p><strong>Họa sĩ:</strong> {artwork.tacGia}</p>
+              <p><strong>Chất liệu tranh:</strong> {artwork.chatLieu || 'Sơn dầu trên vải'}</p>
+              <p><strong>Chất liệu khung:</strong> {artwork.chatLieuKhung || 'Khung gỗ sồi cao cấp'}</p>
+              <p><strong>Kích thước tranh:</strong> {artwork.kichThuoc || 'Chưa rõ'}</p>
+            </div>
+
+            <div className="detail-actions-group">
+              <div className="social-chats">
+                <button className="btn-zalo">
+                  <div className="btn-content">
+                    <span className="btn-title"><i className="ti-comment-alt"></i> Chat zalo</span>
+                    <span className="btn-subtitle">Giải đáp và hỗ trợ ngay tức thì</span>
+                  </div>
                 </button>
-                <input
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value);
-                    if (val > 0 && val <= artwork.soLuongTon) {
-                      setQuantity(val);
-                    }
-                  }}
-                  min="1"
-                  max={artwork.soLuongTon}
-                />
-                <button
-                  onClick={() => setQuantity(Math.min(artwork.soLuongTon, quantity + 1))}
-                  disabled={quantity >= artwork.soLuongTon}
-                >
-                  +
+                <button className="btn-facebook">
+                  <div className="btn-content">
+                    <span className="btn-title"><i className="ti-facebook"></i> Chat Facebook</span>
+                    <span className="btn-subtitle">Giải đáp và hỗ trợ ngay tức thì</span>
+                  </div>
                 </button>
               </div>
             </div>
-          )}
 
-          <div className="action-buttons">
-            <button
-              className="btn-add-cart"
-              onClick={handleAddToCart}
-              disabled={artwork.soLuongTon === 0}
-            >
-              <i className="ti-shopping-cart"></i> Thêm vào giỏ hàng
-            </button>
-            <button
-              className="btn-buy-now"
-              onClick={handleBuyNow}
-              disabled={artwork.soLuongTon === 0}
-            >
-              Mua ngay
-            </button>
+            {artwork.moTa && (
+              <div className="artwork-description-section">
+                <h3>Mô tả tác phẩm</h3>
+                <p>{artwork.moTa}</p>
+              </div>
+            )}
           </div>
 
-          {artwork.moTa && (
-            <div className="description">
-              <h3>Mô tả tác phẩm</h3>
-              <p>{artwork.moTa}</p>
+          {/* Cột phải: Thông tin dịch vụ */}
+          <div className="detail-sidebar">
+            <div className="service-item">
+              <div className="service-icon">
+                <i className="ti-truck"></i>
+              </div>
+              <div className="service-text">
+                <h4>GIAO HÀNG TIÊU CHUẨN</h4>
+                <p>Dự kiến giao 1-7 ngày (phụ thuộc vào địa điểm của bạn).</p>
+              </div>
             </div>
-          )}
+
+            <div className="service-item">
+              <div className="service-icon">
+                <i className="ti-shield"></i>
+              </div>
+              <div className="service-text">
+                <h4>THÔNG TIN BẢO HÀNH</h4>
+                <p>Bảo hành trọn đời.</p>
+              </div>
+            </div>
+
+            <div className="service-item">
+              <div className="service-icon">
+                <i className="ti-reload"></i>
+              </div>
+              <div className="service-text">
+                <h4>ĐỔI TRẢ HÀNG</h4>
+                <p>Áp dụng đổi hàng trong vòng 3 ngày sau khi bắt đầu nhận cọc và thanh toán. Chỉ đổi hàng ngang giá hoặc cao hơn...</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

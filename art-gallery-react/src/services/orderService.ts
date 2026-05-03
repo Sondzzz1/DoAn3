@@ -71,14 +71,15 @@ export const orderService = {
       phone: string;
       address: string;
     },
-    cartItems: CartItem[]
+    cartItems: CartItem[],
+    paymentMethod: string = 'COD'
   ): Promise<string> {
     try {
       const orderData: TaoDonHangRequest = {
         tenNguoiNhan: customerInfo.name,
         soDienThoai: customerInfo.phone,
         diaChiGiao: customerInfo.address,
-        phuongThucThanhToan: 'COD',
+        phuongThucThanhToan: paymentMethod,
       };
 
       const response = await apiClient.post('/don-hang/tao', orderData);

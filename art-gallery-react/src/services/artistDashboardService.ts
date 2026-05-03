@@ -22,6 +22,9 @@ export interface TaoTacPhamRequest {
     soLuong: number;
     moTa?: string;
     hinhAnh?: string;
+    kichThuoc?: string;
+    chatLieu?: string;
+    chatLieuKhung?: string;
 }
 
 export interface CapNhatTacPhamRequest {
@@ -31,6 +34,9 @@ export interface CapNhatTacPhamRequest {
     soLuong: number;
     moTa?: string;
     hinhAnh?: string;
+    kichThuoc?: string;
+    chatLieu?: string;
+    chatLieuKhung?: string;
 }
 
 export interface TacPhamHoaSiResponse {
@@ -41,6 +47,9 @@ export interface TacPhamHoaSiResponse {
     soLuong: number;
     moTa?: string;
     hinhAnh?: string;
+    kichThuoc?: string;
+    chatLieu?: string;
+    chatLieuKhung?: string;
     trangThai: number;
     trangThaiText: string;
     ngayTao: string;

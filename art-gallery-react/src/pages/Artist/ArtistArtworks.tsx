@@ -18,6 +18,9 @@ const ArtistArtworks: React.FC = () => {
     soLuong: '1',
     anhTranh: '',
     moTa: '',
+    kichThuoc: '',
+    chatLieu: '',
+    chatLieuKhung: '',
   });
 
   const [loading, setLoading] = useState(true);
@@ -54,6 +57,9 @@ const ArtistArtworks: React.FC = () => {
         soLuong: artwork.soLuong.toString(),
         anhTranh: artwork.hinhAnh || '',
         moTa: artwork.moTa || '',
+        kichThuoc: artwork.kichThuoc || '',
+        chatLieu: artwork.chatLieu || '',
+        chatLieuKhung: artwork.chatLieuKhung || '',
       });
     } else {
       setEditingArtwork(null);
@@ -64,6 +70,9 @@ const ArtistArtworks: React.FC = () => {
         soLuong: '1',
         anhTranh: '',
         moTa: '',
+        kichThuoc: '',
+        chatLieu: '',
+        chatLieuKhung: '',
       });
     }
     setIsModalOpen(true);
@@ -79,6 +88,9 @@ const ArtistArtworks: React.FC = () => {
         soLuong: parseInt(formData.soLuong),
         hinhAnh: formData.anhTranh,
         moTa: formData.moTa,
+        kichThuoc: formData.kichThuoc,
+        chatLieu: formData.chatLieu,
+        chatLieuKhung: formData.chatLieuKhung,
       };
 
       if (editingArtwork) {
@@ -272,6 +284,36 @@ const ArtistArtworks: React.FC = () => {
                       value={formData.anhTranh}
                       onChange={(e) => setFormData({ ...formData, anhTranh: e.target.value })}
                       placeholder="URL hình ảnh" 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Kích thước:</label>
+                    <input 
+                      type="text" 
+                      value={formData.kichThuoc}
+                      onChange={(e) => setFormData({ ...formData, kichThuoc: e.target.value })}
+                      placeholder="Ví dụ: 60x80 cm" 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Chất liệu tranh:</label>
+                    <input 
+                      type="text" 
+                      value={formData.chatLieu}
+                      onChange={(e) => setFormData({ ...formData, chatLieu: e.target.value })}
+                      placeholder="Ví dụ: Sơn dầu trên toan" 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Chất liệu khung:</label>
+                    <input 
+                      type="text" 
+                      value={formData.chatLieuKhung}
+                      onChange={(e) => setFormData({ ...formData, chatLieuKhung: e.target.value })}
+                      placeholder="Ví dụ: Khung gỗ sồi" 
                     />
                   </div>
                 </div>

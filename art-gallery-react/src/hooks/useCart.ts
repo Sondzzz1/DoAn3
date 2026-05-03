@@ -2,6 +2,7 @@
 import { useCallback, useMemo } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { CartItem } from '../types';
+import { cartService } from '../services/cartService';
 
 export const useCart = () => {
   const { cart, setCart, user } = useAppContext();
@@ -33,7 +34,7 @@ export const useCart = () => {
   }, [cart]);
 
   // Thêm sản phẩm vào giỏ hàng
-  const addToCart = useCallback((item: CartItem) => {
+  const addToCart = useCallback(async (item: CartItem) => {
     if (!user) {
       alert('⚠️ Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
       return false;
@@ -44,39 +45,52 @@ export const useCart = () => {
       return false;
     }
 
-    setCart(prevCart => {
-      const existingItem = prevCart.find(i => i.id === item.id);
-      let newCart: CartItem[];
-
-      if (existingItem) {
-        newCart = prevCart.map(i =>
-          i.id === item.id
-            ? { ...i, quantity: i.quantity + item.quantity }
-            : i
-        );
-      } else {
-        newCart = [...prevCart, item];
-      }
-
-      saveCart(newCart);
-      return newCart;
-    });
-
-    return true;
+    try {
+      // Gọi API backend
+      await cartService.addToCart(parseInt(item.id), item.quantity);
+      
+      // Cập nhật state local bằng cách load lại từ server để có dbId chính xác
+      const serverCart = await cartService.getGioHang();
+      setCart(serverCart);
+      saveCart(serverCart);
+      return true;
+    } catch (error: any) {
+      console.error('Add to cart error:', error);
+      alert(error.message || 'Lỗi khi thêm vào giỏ hàng');
+      return false;
+    }
   }, [user, setCart, saveCart]);
 
   // Xóa sản phẩm khỏi giỏ hàng
-  const removeFromCart = useCallback((id: string) => {
+  const removeFromCart = useCallback(async (id: string) => {
+    const item = cart.find(i => i.id === id);
+    if (item && item.dbId) {
+      try {
+        await cartService.removeFromCart(item.dbId);
+      } catch (error) {
+        console.error('Remove from cart error:', error);
+      }
+    }
+
     setCart(prevCart => {
       const newCart = prevCart.filter(item => item.id !== id);
       saveCart(newCart);
       return newCart;
     });
-  }, [setCart, saveCart]);
+  }, [cart, setCart, saveCart]);
 
   // Cập nhật số lượng
-  const updateQuantity = useCallback((id: string, quantity: number) => {
+  const updateQuantity = useCallback(async (id: string, quantity: number) => {
     if (quantity < 1) return;
+
+    const item = cart.find(i => i.id === id);
+    if (item && item.dbId) {
+      try {
+        await cartService.updateQuantity(item.dbId, quantity);
+      } catch (error) {
+        console.error('Update quantity error:', error);
+      }
+    }
 
     setCart(prevCart => {
       const newCart = prevCart.map(item =>
@@ -85,7 +99,7 @@ export const useCart = () => {
       saveCart(newCart);
       return newCart;
     });
-  }, [setCart, saveCart]);
+  }, [cart, setCart, saveCart]);
 
   // Tăng số lượng
   const increaseQuantity = useCallback((id: string) => {

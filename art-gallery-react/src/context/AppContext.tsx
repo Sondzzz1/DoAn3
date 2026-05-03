@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, CartItem, Artwork } from '../types';
 import { artworkService } from '../services/artworkService';
+import { cartService } from '../services/cartService';
 
 interface AppContextType {
   // User state
@@ -79,23 +80,28 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     refreshArtworks();
   }, []);
 
-  // Load cart khi user thay đổi
+  // Load cart khi user thay đổi - Đồng bộ với Backend
   useEffect(() => {
-    if (user && user.email) {
-      const cartKey = `cart_${user.email}`;
-      const savedCart = localStorage.getItem(cartKey);
-      if (savedCart) {
+    const loadCart = async () => {
+      if (user && user.email) {
         try {
-          setCart(JSON.parse(savedCart));
+          const serverCart = await cartService.getGioHang();
+          setCart(serverCart);
+          console.log('✅ Đã đồng bộ giỏ hàng từ server');
         } catch (error) {
-          console.error('Error loading cart:', error);
+          console.error('❌ Lỗi khi load giỏ hàng từ server, sử dụng local storage:', error);
+          const cartKey = `cart_${user.email}`;
+          const savedCart = localStorage.getItem(cartKey);
+          if (savedCart) {
+            setCart(JSON.parse(savedCart));
+          }
         }
       } else {
         setCart([]);
       }
-    } else {
-      setCart([]);
-    }
+    };
+
+    loadCart();
   }, [user]);
 
   const value = {

@@ -18,6 +18,7 @@ export interface Artwork {
 
 export interface CartItem {
   id: string;
+  dbId?: number; // ID trong database (maChiTietGH)
   name: string;
   price: number;
   image: string;

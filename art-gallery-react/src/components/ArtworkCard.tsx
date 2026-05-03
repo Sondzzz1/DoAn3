@@ -21,7 +21,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({
   const { addToCart } = useCart();
 
   // Event Handler - Xử lý thêm vào giỏ hàng
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -33,7 +33,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({
       quantity: 1,
     };
 
-    const success = addToCart(cartItem);
+    const success = await addToCart(cartItem);
     if (success) {
       alert('🛒 Đã thêm sản phẩm vào giỏ hàng!');
       if (onAddToCart) {

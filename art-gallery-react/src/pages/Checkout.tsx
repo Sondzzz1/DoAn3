@@ -18,6 +18,7 @@ const Checkout: React.FC = () => {
     address: user?.address || '',
     note: '',
   });
+  const [paymentMethod, setPaymentMethod] = useState('COD');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -61,7 +62,8 @@ const Checkout: React.FC = () => {
           phone: formData.phone,
           address: formData.address,
         },
-        cart
+        cart,
+        paymentMethod
       );
 
       alert('Đặt hàng thành công! Cảm ơn bạn đã mua hàng.');
@@ -209,17 +211,33 @@ const Checkout: React.FC = () => {
 
             <div className="payment-methods">
               <div className="payment-option">
-                <input type="radio" id="cod" name="payment" defaultChecked />
+                <input 
+                  type="radio" 
+                  id="cod" 
+                  name="payment" 
+                  value="COD"
+                  checked={paymentMethod === 'COD'}
+                  onChange={(e) => setPaymentMethod(e.target.value)} 
+                />
                 <label htmlFor="cod">
-                  Thanh toán tiền mặt khi nhận hàng (Tiền mặt / quẹt thẻ ATM, Visa, Master)
+                  Thanh toán tiền mặt khi nhận hàng (COD)
                 </label>
               </div>
               <div className="payment-option">
-                <input type="radio" id="transfer" name="payment" />
+                <input 
+                  type="radio" 
+                  id="transfer" 
+                  name="payment" 
+                  value="BankTransfer"
+                  checked={paymentMethod === 'BankTransfer'}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
                 <label htmlFor="transfer">
-                  Thanh toán qua chuyển khoản qua tài khoản ngân hàng (Khuyến dùng)
+                  Thanh toán qua chuyển khoản ngân hàng
                 </label>
-                <p className="payment-note">Nhập số tài khoản ngân hàng</p>
+                {paymentMethod === 'BankTransfer' && (
+                  <p className="payment-note">Vui lòng chuyển khoản vào STK: 123456789 - Ngân hàng MBBank. Nội dung: [Mã đơn hàng]</p>
+                )}
               </div>
             </div>
           </div>
