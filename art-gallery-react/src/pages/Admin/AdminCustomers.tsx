@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { customerService } from '../../services/customerService';
-
-interface Customer {
-    id: string;
-    hoTen: string;
-    email: string;
-    soDienThoai: string;
-    diaChi?: string;
-    ngayDangKy: string;
-}
+import { customerService, ThongTinKhachHangResponse } from '../../services/customerService';
 
 const AdminCustomers: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [customers, setCustomers] = useState<ThongTinKhachHangResponse[]>([]);
     const [loading, setLoading] = useState(false);
 
     // Load customers khi component mount
@@ -72,18 +63,16 @@ const AdminCustomers: React.FC = () => {
                             <th>Số điện thoại</th>
                             <th>Email</th>
                             <th>Địa chỉ</th>
-                            <th>Ngày đăng ký</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         {customers.map((customer) => (
-                            <tr key={customer.id}>
-                                <td>{customer.hoTen}</td>
-                                <td>{customer.soDienThoai}</td>
-                                <td>{customer.email}</td>
+                            <tr key={customer.maNguoiDung}>
+                                <td>{customer.ten}</td>
+                                <td>{customer.dienThoai || 'N/A'}</td>
+                                <td>{customer.email || 'N/A'}</td>
                                 <td>{customer.diaChi || 'Chưa cập nhật'}</td>
-                                <td>{formatDate(customer.ngayDangKy)}</td>
                                 <td>
                                     <button className="edit-btn" title="Sửa">
                                         <i className="ti-pencil"></i>

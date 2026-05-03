@@ -1,18 +1,12 @@
-// Admin Categories - Quản lý danh mục tranh
 import React, { useState, useEffect } from 'react';
-import { adminService } from '../../services/adminService';
+import { adminService, DanhMucResponse } from '../../services/adminService';
 
-interface Category {
-  maDanhMuc: number;
-  tenDanhMuc: string;
-  moTa?: string;
-}
 
 const AdminCategories: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<DanhMucResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editingCategory, setEditingCategory] = useState<DanhMucResponse | null>(null);
   const [formData, setFormData] = useState({
     tenDanhMuc: '',
     moTa: '',
@@ -35,7 +29,7 @@ const AdminCategories: React.FC = () => {
     }
   };
 
-  const handleOpenModal = (category?: Category) => {
+  const handleOpenModal = (category?: DanhMucResponse) => {
     if (category) {
       setEditingCategory(category);
       setFormData({

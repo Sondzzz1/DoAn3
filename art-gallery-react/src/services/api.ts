@@ -2,7 +2,9 @@
 import axios from 'axios';
 
 // Base URL của API backend
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://localhost:7001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5273/api';
+
+console.log('API Base URL:', API_BASE_URL);
 
 // Tạo axios instance với cấu hình mặc định
 const apiClient = axios.create({
@@ -10,7 +12,9 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 seconds
+  timeout: 30000, // 30 seconds
+  // Cho phép gửi request đến HTTPS với self-signed certificate
+  withCredentials: false,
 });
 
 // Request interceptor - Thêm token vào header nếu có
@@ -20,23 +24,65 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    console.log('API Request:', {
+      method: config.method?.toUpperCase(),
+      url: config.url,
+      baseURL: config.baseURL,
+      fullURL: `${config.baseURL}${config.url}`,
+    });
+    
     return config;
   },
   (error) => {
+    console.error('Request Error:', error);
     return Promise.reject(error);
   }
 );
 
 // Response interceptor - Xử lý lỗi chung
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('API Response:', {
+      status: response.status,
+      url: response.config.url,
+      data: response.data,
+    });
+    return response;
+  },
   (error) => {
+    console.error('API Error:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+    });
+
     if (error.response?.status === 401) {
       // Unauthorized - Xóa token và redirect về login
       localStorage.removeItem('authToken');
       localStorage.removeItem('currentUser');
-      window.location.href = '/login';
+      localStorage.removeItem('user');
+      
+      // Chỉ redirect nếu không phải đang ở trang login
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
     }
+
+    if (error.response?.status === 403) {
+      // Forbidden - Không có quyền truy cập
+      alert('Bạn không có quyền truy cập chức năng này!');
+    }
+
+    if (error.response?.status === 404) {
+      console.warn('Resource not found:', error.config?.url);
+    }
+
+    if (error.response?.status >= 500) {
+      console.error('Server error:', error.response?.data);
+    }
+
     return Promise.reject(error);
   }
 );

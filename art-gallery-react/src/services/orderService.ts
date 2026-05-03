@@ -2,36 +2,33 @@
 import apiClient from './api';
 import { Order, CartItem } from '../types';
 
-// Interface cho DTO backend
-interface DonHangCreateDTO {
-  maNguoiDung: number;
-  tenNguoiNhan?: string;
-  soDienThoai?: string;
-  diaChiGiao?: string;
-  chiTiet: {
-    maTacPham: number;
-    soLuong: number;
-  }[];
+// Interface khớp với TaoDonHangRequest từ KhachHangController backend
+interface TaoDonHangRequest {
+  tenNguoiNhan: string;
+  soDienThoai: string;
+  diaChiGiao: string;
+  phuongThucThanhToan?: string; // COD, BankTransfer, Momo, VNPay
 }
 
-interface DonHangViewDTO {
+// Interface khớp với DonHangResponse từ backend
+interface DonHangResponseDTO {
   maDonHang: number;
-  maNguoiDung: number;
-  tenNguoiDung?: string;
   ngayDat: string;
   tongTien: number;
-  tenNguoiNhan?: string;
-  soDienThoai?: string;
-  diaChiGiao?: string;
+  tenNguoiNhan: string;
+  soDienThoai: string;
+  diaChiGiao: string;
   trangThai: number;
+  trangThaiText: string;
+  trangThaiThanhToan?: string;
   chiTiet: {
-    maChiTietDH: number;
     maTacPham: number;
-    tenTacPham?: string;
-    hinhAnh?: string;
+    tenTacPham: string;
+    tenHoaSi: string;
     soLuong: number;
     donGia: number;
     thanhTien: number;
+    hinhAnh?: string;
   }[];
 }
 
@@ -46,8 +43,27 @@ const mapTrangThai = (status: number): 'pending' | 'shipped' | 'success' | 'canc
   }
 };
 
+const mapDtoToOrder = (dto: DonHangResponseDTO): Order => ({
+  id: dto.maDonHang.toString(),
+  maHD: `DH${dto.maDonHang.toString().padStart(6, '0')}`,
+  tenKH: dto.tenNguoiNhan || 'Khách hàng',
+  email: '',
+  phone: dto.soDienThoai || '',
+  address: dto.diaChiGiao || '',
+  ngayLap: dto.ngayDat,
+  trangThai: mapTrangThai(dto.trangThai),
+  tongTien: dto.tongTien,
+  items: (dto.chiTiet || []).map(ct => ({
+    id: ct.maTacPham.toString(),
+    name: ct.tenTacPham || '',
+    price: ct.donGia,
+    image: ct.hinhAnh || '',
+    quantity: ct.soLuong,
+  })),
+});
+
 export const orderService = {
-  // Tạo đơn hàng mới
+  // Tạo đơn hàng mới (Khách hàng - dùng JWT, giỏ hàng trên server)
   async createOrder(
     userId: number,
     customerInfo: {
@@ -58,18 +74,14 @@ export const orderService = {
     cartItems: CartItem[]
   ): Promise<string> {
     try {
-      const orderData: DonHangCreateDTO = {
-        maNguoiDung: userId,
+      const orderData: TaoDonHangRequest = {
         tenNguoiNhan: customerInfo.name,
         soDienThoai: customerInfo.phone,
         diaChiGiao: customerInfo.address,
-        chiTiet: cartItems.map(item => ({
-          maTacPham: parseInt(item.id),
-          soLuong: item.quantity,
-        })),
+        phuongThucThanhToan: 'COD',
       };
 
-      const response = await apiClient.post('/DonHang/create', orderData);
+      const response = await apiClient.post('/don-hang/tao', orderData);
       return response.data.message;
     } catch (error: any) {
       console.error('Error creating order:', error);
@@ -77,73 +89,45 @@ export const orderService = {
     }
   },
 
-  // Lấy tất cả đơn hàng (Admin)
-  async getAllOrders(): Promise<Order[]> {
+  // Lấy đơn hàng của tôi (Khách hàng - dùng JWT)
+  async getMyOrders(): Promise<Order[]> {
     try {
-      const response = await apiClient.get<DonHangViewDTO[]>('/DonHang/get-all');
-      return response.data.map(dto => ({
-        id: dto.maDonHang.toString(),
-        maHD: `DH${dto.maDonHang.toString().padStart(6, '0')}`,
-        tenKH: dto.tenNguoiNhan || dto.tenNguoiDung || 'Khách hàng',
-        email: '', // Backend không có field này
-        phone: dto.soDienThoai || '',
-        address: dto.diaChiGiao || '',
-        ngayLap: dto.ngayDat,
-        trangThai: mapTrangThai(dto.trangThai),
-        tongTien: dto.tongTien,
-        items: dto.chiTiet.map(ct => ({
-          id: ct.maTacPham.toString(),
-          name: ct.tenTacPham || '',
-          price: ct.donGia,
-          image: ct.hinhAnh || '',
-          quantity: ct.soLuong,
-        })),
-      }));
+      const response = await apiClient.get<DonHangResponseDTO[]>('/don-hang/cua-toi');
+      return response.data.map(mapDtoToOrder);
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      console.error('Error fetching my orders:', error);
       throw error;
     }
   },
 
-  // Lấy đơn hàng theo user ID
-  async getOrdersByUserId(userId: number): Promise<Order[]> {
+  // Lấy đơn hàng theo ID
+  async getOrderById(id: number): Promise<Order> {
     try {
-      const response = await apiClient.get<DonHangViewDTO[]>(`/DonHang/get-by-user/${userId}`);
-      return response.data.map(dto => ({
-        id: dto.maDonHang.toString(),
-        maHD: `DH${dto.maDonHang.toString().padStart(6, '0')}`,
-        tenKH: dto.tenNguoiNhan || dto.tenNguoiDung || 'Khách hàng',
-        email: '',
-        phone: dto.soDienThoai || '',
-        address: dto.diaChiGiao || '',
-        ngayLap: dto.ngayDat,
-        trangThai: mapTrangThai(dto.trangThai),
-        tongTien: dto.tongTien,
-        items: dto.chiTiet.map(ct => ({
-          id: ct.maTacPham.toString(),
-          name: ct.tenTacPham || '',
-          price: ct.donGia,
-          image: ct.hinhAnh || '',
-          quantity: ct.soLuong,
-        })),
-      }));
+      const response = await apiClient.get<DonHangResponseDTO>(`/don-hang/${id}`);
+      return mapDtoToOrder(response.data);
     } catch (error) {
-      console.error('Error fetching user orders:', error);
+      console.error('Error fetching order:', error);
       throw error;
     }
   },
 
-  // Cập nhật trạng thái đơn hàng (Admin)
-  async updateOrderStatus(orderId: number, status: number): Promise<string> {
+  // Hủy đơn hàng (Khách hàng)
+  async cancelOrder(id: number): Promise<string> {
     try {
-      const response = await apiClient.put('/DonHang/update-status', {
-        maDonHang: orderId,
-        trangThai: status,
-      });
+      const response = await apiClient.put(`/don-hang/${id}/huy`);
       return response.data.message;
     } catch (error: any) {
-      console.error('Error updating order status:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi cập nhật trạng thái');
+      console.error('Error canceling order:', error);
+      throw new Error(error.response?.data?.message || 'Lỗi khi hủy đơn hàng');
     }
+  },
+
+  // === Alias cho code cũ ===
+  async getAllOrders(): Promise<Order[]> {
+    return this.getMyOrders();
+  },
+
+  async getOrdersByUserId(userId: number): Promise<Order[]> {
+    return this.getMyOrders();
   },
 };

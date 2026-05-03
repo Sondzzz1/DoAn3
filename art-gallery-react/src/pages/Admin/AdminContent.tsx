@@ -1,23 +1,12 @@
-// Admin Content - Quản lý và duyệt nội dung
 import React, { useState, useEffect } from 'react';
-import { adminService } from '../../services/adminService';
+import { adminService, BaiVietResponse } from '../../services/adminService';
 
-interface Content {
-  maBaiViet: number;
-  tieuDe: string;
-  tenHoaSi: string;
-  ngayDang: string;
-  trangThai: number; // 0: pending, 1: approved, 2: rejected
-  trangThaiText: string;
-  noiDung: string;
-}
 
 const AdminContent: React.FC = () => {
-  const { artworks } = useAppContext();
-  const [contents, setContents] = useState<Content[]>([]);
+  const [contents, setContents] = useState<BaiVietResponse[]>([]);
   const [filter, setFilter] = useState<number>(-1); // -1: all
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [viewingContent, setViewingContent] = useState<Content | null>(null);
+  const [viewingContent, setViewingContent] = useState<BaiVietResponse | null>(null);
 
   useEffect(() => {
     loadContents();
@@ -82,7 +71,7 @@ const AdminContent: React.FC = () => {
     }
   };
 
-  const handleView = (content: Content) => {
+  const handleView = (content: BaiVietResponse) => {
     setViewingContent(content);
   };
 

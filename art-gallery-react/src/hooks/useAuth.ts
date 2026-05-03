@@ -3,30 +3,12 @@ import { useCallback } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { authService } from '../services/authService';
 
-const ADMIN_EMAIL = 'admin@artgallery.com';
-const ADMIN_PASSWORD = 'admin123';
-
 export const useAuth = () => {
   const { user, setUser } = useAppContext();
 
-  // Login function - Kết nối với Backend
+  // Login function - Kết nối với Backend API
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     try {
-      // Kiểm tra admin (hardcoded)
-      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        const adminUser = {
-          id: 'admin-001',
-          email: ADMIN_EMAIL,
-          name: 'Quản trị viên',
-          role: 'admin' as const,
-        };
-        setUser(adminUser);
-        localStorage.setItem('currentUser', JSON.stringify(adminUser));
-        localStorage.setItem('authToken', 'admin_token');
-        return true;
-      }
-
-      // Login thông thường qua API
       const loggedInUser = await authService.login(email, password);
       if (loggedInUser) {
         setUser(loggedInUser);

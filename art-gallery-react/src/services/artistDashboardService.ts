@@ -105,37 +105,37 @@ export const artistDashboardService = {
 
   // --- TÁC PHẨM ---
   getTacPhamCuaToi: async (): Promise<TacPhamHoaSiResponse[]> => {
-    const response = await apiClient.get('/hoa-si/tac-pham-cua-toi');
+    const response = await apiClient.get('/hoa-si/tac-pham/get-all');
     return response.data;
   },
   taoTacPham: async (data: TaoTacPhamRequest): Promise<any> => {
-    const response = await apiClient.post('/hoa-si/tac-pham/tao', data);
+    const response = await apiClient.post('/hoa-si/tac-pham/create', data);
     return response.data;
   },
   capNhatTacPham: async (id: number, data: CapNhatTacPhamRequest): Promise<any> => {
-    const response = await apiClient.put(`/hoa-si/tac-pham/${id}`, data);
+    const response = await apiClient.put(`/hoa-si/tac-pham/${id}/update`, data);
     return response.data;
   },
   xoaTacPham: async (id: number): Promise<any> => {
-    const response = await apiClient.delete(`/hoa-si/tac-pham/${id}`);
+    const response = await apiClient.delete(`/hoa-si/tac-pham/${id}/delete`);
     return response.data;
   },
 
   // --- BÀI VIẾT ---
   getBaiVietCuaToi: async (): Promise<BaiVietResponse[]> => {
-    const response = await apiClient.get('/hoa-si/bai-viet');
+    const response = await apiClient.get('/hoa-si/bai-viet/get-all');
     return response.data;
   },
   taoBaiViet: async (data: TaoBaiVietRequest): Promise<any> => {
-    const response = await apiClient.post('/hoa-si/bai-viet/tao', data);
+    const response = await apiClient.post('/hoa-si/bai-viet/create', data);
     return response.data;
   },
   capNhatBaiViet: async (id: number, data: CapNhatBaiVietRequest): Promise<any> => {
-    const response = await apiClient.put(`/hoa-si/bai-viet/${id}`, data);
+    const response = await apiClient.put(`/hoa-si/bai-viet/${id}/update`, data);
     return response.data;
   },
   xoaBaiViet: async (id: number): Promise<any> => {
-    const response = await apiClient.delete(`/hoa-si/bai-viet/${id}`);
+    const response = await apiClient.delete(`/hoa-si/bai-viet/${id}/delete`);
     return response.data;
   },
 

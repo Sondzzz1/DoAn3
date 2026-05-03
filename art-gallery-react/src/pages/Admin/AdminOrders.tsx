@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { adminService } from '../../services/adminService';
-
-interface OrderAdmin {
-    maDonHang: number;
-    ngayDat: string;
-    tongTien: number;
-    trangThai: number;
-    trangThaiText: string;
-}
+import { adminService, DonHangAdminResponse } from '../../services/adminService';
 
 const AdminOrders: React.FC = () => {
-    const [orders, setOrders] = useState<OrderAdmin[]>([]);
+    const [orders, setOrders] = useState<DonHangAdminResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState<number>(-1);
     const [searchTerm, setSearchTerm] = useState('');

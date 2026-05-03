@@ -1,95 +1,53 @@
-// Customer Service - API calls cho Khách hàng
+// Customer Service - API cho thông tin khách hàng (cần auth)
 import apiClient from './api';
 
-// Interface cho DTO backend
-interface KhachHangViewDTO {
-  id: string;
-  hoTen: string;
-  email: string;
-  soDienThoai: string;
+// Interface khớp với ThongTinKhachHangResponse từ backend
+export interface ThongTinKhachHangResponse {
+  maNguoiDung: number;
+  ten: string;
   diaChi?: string;
-  ngayDangKy: string;
+  dienThoai?: string;
+  email?: string;
 }
 
-interface KhachHangCreateDTO {
-  hoTen: string;
-  email: string;
-  soDienThoai: string;
+export interface CapNhatThongTinRequest {
+  ten: string;
   diaChi?: string;
-}
-
-interface KhachHangUpdateDTO {
-  id: string;
-  hoTen: string;
-  email: string;
-  soDienThoai: string;
-  diaChi?: string;
+  dienThoai?: string;
+  email?: string;
 }
 
 export const customerService = {
-  // Lấy tất cả khách hàng
-  async getAllCustomers(): Promise<KhachHangViewDTO[]> {
+  // Lấy thông tin cá nhân (dùng JWT token để xác định user)
+  async getThongTin(): Promise<ThongTinKhachHangResponse> {
     try {
-      const response = await apiClient.get<KhachHangViewDTO[]>('/KhachHang/get-all');
+      const response = await apiClient.get<ThongTinKhachHangResponse>('/khach-hang/thong-tin');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching customer info:', error);
+      throw error;
+    }
+  },
+
+  // Cập nhật thông tin cá nhân
+  async capNhatThongTin(data: CapNhatThongTinRequest): Promise<string> {
+    try {
+      const response = await apiClient.put('/khach-hang/cap-nhat', data);
+      return response.data.message;
+    } catch (error: any) {
+      console.error('Error updating customer info:', error);
+      throw new Error(error.response?.data?.message || 'Lỗi khi cập nhật thông tin');
+    }
+  },
+
+  // === ADMIN: Lấy tất cả khách hàng (gọi từ AdminCustomers) ===
+  async getAllCustomers(): Promise<ThongTinKhachHangResponse[]> {
+    try {
+      const response = await apiClient.get<ThongTinKhachHangResponse[]>('/admin/khach-hang/get-all');
       return response.data;
     } catch (error) {
       console.error('Error fetching customers:', error);
       throw error;
-    }
-  },
-
-  // Lấy khách hàng theo ID
-  async getCustomerById(id: string): Promise<KhachHangViewDTO> {
-    try {
-      const response = await apiClient.get<KhachHangViewDTO>(`/KhachHang/get-by-id/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching customer:', error);
-      throw error;
-    }
-  },
-
-  // Tạo khách hàng mới (Đăng ký)
-  async createCustomer(data: KhachHangCreateDTO): Promise<string> {
-    try {
-      const response = await apiClient.post('/KhachHang/create', data);
-      return response.data.message;
-    } catch (error: any) {
-      console.error('Error creating customer:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi tạo khách hàng');
-    }
-  },
-
-  // Cập nhật thông tin khách hàng
-  async updateCustomer(data: KhachHangUpdateDTO): Promise<string> {
-    try {
-      const response = await apiClient.put('/KhachHang/update', data);
-      return response.data.message;
-    } catch (error: any) {
-      console.error('Error updating customer:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi cập nhật khách hàng');
-    }
-  },
-
-  // Xóa khách hàng (Admin only)
-  async deleteCustomer(id: string): Promise<string> {
-    try {
-      const response = await apiClient.delete(`/KhachHang/delete/${id}`);
-      return response.data.message;
-    } catch (error: any) {
-      console.error('Error deleting customer:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi xóa khách hàng');
-    }
-  },
-
-  // Tìm khách hàng theo email (cho login)
-  async getCustomerByEmail(email: string): Promise<KhachHangViewDTO | null> {
-    try {
-      const customers = await this.getAllCustomers();
-      return customers.find(c => c.email.toLowerCase() === email.toLowerCase()) || null;
-    } catch (error) {
-      console.error('Error finding customer by email:', error);
-      return null;
     }
   },
 };

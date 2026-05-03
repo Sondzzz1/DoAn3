@@ -5,7 +5,7 @@ import { categoryService } from '../../services/categoryService';
 
 const ArtistArtworks: React.FC = () => {
   const [myArtworks, setMyArtworks] = useState<TacPhamHoaSiResponse[]>([]);
-  const [categories, setCategories] = useState<{ id: string, tenLoai: string }[]>([]);
+  const [categories, setCategories] = useState<{ maDanhMuc: number, tenDanhMuc: string }[]>([]);
   const [filter, setFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,11 +46,11 @@ const ArtistArtworks: React.FC = () => {
     if (artwork) {
       setEditingArtwork(artwork);
       // Tìm mã danh mục dựa trên tên
-      const cat = categories.find(c => c.tenLoai === artwork.tenDanhMuc);
+      const cat = categories.find(c => c.tenDanhMuc === artwork.tenDanhMuc);
       setFormData({
         tenTacPham: artwork.tenTacPham,
         gia: artwork.gia.toString(),
-        maDanhMuc: cat ? cat.id : (categories.length > 0 ? categories[0].id : ''),
+        maDanhMuc: cat ? cat.maDanhMuc.toString() : (categories.length > 0 ? categories[0].maDanhMuc.toString() : ''),
         soLuong: artwork.soLuong.toString(),
         anhTranh: artwork.hinhAnh || '',
         moTa: artwork.moTa || '',
@@ -60,7 +60,7 @@ const ArtistArtworks: React.FC = () => {
       setFormData({
         tenTacPham: '',
         gia: '',
-        maDanhMuc: categories.length > 0 ? categories[0].id : '',
+        maDanhMuc: categories.length > 0 ? categories[0].maDanhMuc.toString() : '',
         soLuong: '1',
         anhTranh: '',
         moTa: '',
@@ -149,7 +149,7 @@ const ArtistArtworks: React.FC = () => {
         <select value={filter} onChange={(e) => setFilter(e.target.value)} style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '5px' }}>
           <option value="all">Tất cả danh mục ({myArtworks.length})</option>
           {categories.map(c => (
-              <option key={c.id} value={c.tenLoai}>{c.tenLoai}</option>
+              <option key={c.maDanhMuc} value={c.tenDanhMuc}>{c.tenDanhMuc}</option>
           ))}
         </select>
       </div>
@@ -248,7 +248,7 @@ const ArtistArtworks: React.FC = () => {
                       required
                     >
                       {categories.map(c => (
-                          <option key={c.id} value={c.id}>{c.tenLoai}</option>
+                          <option key={c.maDanhMuc} value={c.maDanhMuc}>{c.tenDanhMuc}</option>
                       ))}
                     </select>
                   </div>

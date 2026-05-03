@@ -1,56 +1,43 @@
-// Artwork Service - API calls cho Tranh
+// Artwork Service - API calls cho Tranh (Public)
 import apiClient from './api';
 import { Artwork } from '../types';
 
-// Interface cho response từ backend
-interface TranhViewDTO {
-  id: string;
-  tenTranh: string;
-  loaiTranhId: string;
-  tenLoai: string;
-  hoaSiId: string;
+// Interface khớp với TacPhamResponse từ PublicController backend
+interface TacPhamResponse {
+  maTacPham: number;
+  tenTacPham: string;
   tenHoaSi: string;
+  tenDanhMuc?: string;
+  gia: number;
+  soLuong: number;
   moTa?: string;
-  kichThuoc?: string;
-  chatLieu?: string;
-  giaBan: number;
-  soLuongTon: number;
   hinhAnh?: string;
-  ngayThem: string;
-  trangThai: string;
 }
 
 // Chuyển đổi từ DTO backend sang Artwork frontend
-const mapToArtwork = (dto: TranhViewDTO): Artwork => {
-  let anhTranh = dto.hinhAnh || '/placeholder.jpg';
-  
-  // Tạm thời hardcode cho tranh Sang Đông (Backend sẽ sửa sau)
-  if (dto.tenTranh === 'Sang Đông') {
-    anhTranh = '/assets/TrangNgoai/sangdong.webp';
-  }
-
+const mapToArtwork = (dto: TacPhamResponse): Artwork => {
   return {
-    id: dto.id,
-    tenTranh: dto.tenTranh,
-    giaBan: dto.giaBan,
-    danhMuc: dto.tenLoai as 'Tranh sơn dầu' | 'Tranh sơn mài' | 'Tranh cổ điển',
+    id: dto.maTacPham.toString(),
+    tenTranh: dto.tenTacPham,
+    giaBan: dto.gia,
+    danhMuc: (dto.tenDanhMuc || 'Khác') as any,
     tacGia: dto.tenHoaSi,
-    kichThuoc: dto.kichThuoc,
-    chatLieu: dto.chatLieu,
-    chatLieuKhung: '', // Backend không có field này
-    soLuongTon: dto.soLuongTon,
-    anhTranh: anhTranh,
+    kichThuoc: '',
+    chatLieu: '',
+    chatLieuKhung: '',
+    soLuongTon: dto.soLuong,
+    anhTranh: dto.hinhAnh || '/placeholder.jpg',
     moTa: dto.moTa,
-    isFeatured: false, // Có thể thêm logic để xác định
-    isBestSelling: false, // Có thể thêm logic để xác định
+    isFeatured: false,
+    isBestSelling: false,
   };
 };
 
 export const artworkService = {
-  // Lấy tất cả tranh
+  // Lấy tất cả tranh (Public API)
   async getAllArtworks(): Promise<Artwork[]> {
     try {
-      const response = await apiClient.get<TranhViewDTO[]>('/Tranh/get-all');
+      const response = await apiClient.get<TacPhamResponse[]>('/tranh');
       return response.data.map(mapToArtwork);
     } catch (error) {
       console.error('Error fetching artworks:', error);
@@ -58,47 +45,14 @@ export const artworkService = {
     }
   },
 
-  // Lấy tranh theo ID
+  // Lấy tranh theo ID (Public API)
   async getArtworkById(id: string): Promise<Artwork> {
     try {
-      const response = await apiClient.get<TranhViewDTO>(`/Tranh/get-by-id/${id}`);
+      const response = await apiClient.get<TacPhamResponse>(`/tranh/${id}`);
       return mapToArtwork(response.data);
     } catch (error) {
       console.error('Error fetching artwork:', error);
       throw error;
-    }
-  },
-
-  // Tạo tranh mới (Admin only)
-  async createArtwork(data: any): Promise<string> {
-    try {
-      const response = await apiClient.post('/Tranh/create', data);
-      return response.data.message;
-    } catch (error: any) {
-      console.error('Error creating artwork:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi tạo tranh');
-    }
-  },
-
-  // Cập nhật tranh (Admin only)
-  async updateArtwork(data: any): Promise<string> {
-    try {
-      const response = await apiClient.put('/Tranh/update', data);
-      return response.data.message;
-    } catch (error: any) {
-      console.error('Error updating artwork:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi cập nhật tranh');
-    }
-  },
-
-  // Xóa tranh (Admin only)
-  async deleteArtwork(id: string): Promise<string> {
-    try {
-      const response = await apiClient.delete(`/Tranh/delete/${id}`);
-      return response.data.message;
-    } catch (error: any) {
-      console.error('Error deleting artwork:', error);
-      throw new Error(error.response?.data?.message || 'Lỗi khi xóa tranh');
     }
   },
 };

@@ -37,11 +37,10 @@ const UserProfile: React.FC = () => {
     e.preventDefault();
     try {
       if (user?.id) {
-        await customerService.updateCustomer({
-          id: user.id,
-          hoTen: formData.name,
+        await customerService.capNhatThongTin({
+          ten: formData.name,
           email: formData.email,
-          soDienThoai: formData.phone,
+          dienThoai: formData.phone,
           diaChi: formData.address,
         });
         

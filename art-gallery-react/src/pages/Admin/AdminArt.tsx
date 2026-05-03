@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { adminService } from '../../services/adminService';
-
-interface ArtworkAdmin {
-    maTacPham: number;
-    tenTacPham: string;
-    giaBan: number;
-    hinhAnh: string;
-    tenDanhMuc: string;
-    tenHoaSi: string;
-    trangThai: number;
-    trangThaiText: string;
-}
+import { adminService, TacPhamHoaSiResponse } from '../../services/adminService';
 
 const AdminArt: React.FC = () => {
-    const [artworks, setArtworks] = useState<ArtworkAdmin[]>([]);
+    const [artworks, setArtworks] = useState<TacPhamHoaSiResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState<number>(-1);
 
@@ -119,7 +108,7 @@ const AdminArt: React.FC = () => {
                             <tr key={artwork.maTacPham}>
                                 <td>
                                     <img 
-                                        src={artwork.hinhAnh} 
+                                        src={artwork.hinhAnh || 'https://via.placeholder.com/80?text=No+Image'}
                                         alt={artwork.tenTacPham}
                                         style={{ width: '80px', height: '80px', objectFit: 'cover' }}
                                         onError={(e) => {
@@ -128,30 +117,45 @@ const AdminArt: React.FC = () => {
                                     />
                                 </td>
                                 <td>{artwork.tenTacPham}</td>
-                                <td>{artwork.tenDanhMuc}</td>
-                                <td>{artwork.tenHoaSi}</td>
-                                <td>{formatPrice(artwork.giaBan)}</td>
+                                <td>{artwork.tenDanhMuc || '-'}</td>
+                                <td>{artwork.tenHoaSi || '-'}</td>
+                                <td>{formatPrice(artwork.gia)}</td>
                                 <td>
                                     <span className={`status status-${artwork.trangThai}`}>
                                         {artwork.trangThaiText}
                                     </span>
                                 </td>
                                 <td>
-                                    {artwork.trangThai === 0 && (
+                                    {artwork.trangThai === 0 ? (
                                         <>
                                             <button 
+                                                className="approve-btn"
                                                 onClick={() => handleApprove(artwork.maTacPham)}
-                                                style={{ color: 'green', marginRight: '10px' }}
                                                 title="Duyệt"
                                             >
-                                                <i className="ti-check"></i>
+                                                <i className="ti-check"></i> Duyệt
                                             </button>
                                             <button 
+                                                className="reject-btn"
                                                 onClick={() => handleReject(artwork.maTacPham)}
-                                                style={{ color: 'orange' }}
                                                 title="Từ chối"
                                             >
-                                                <i className="ti-close"></i>
+                                                <i className="ti-close"></i> Từ chối
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button 
+                                                className="edit-btn"
+                                                title="Sửa"
+                                            >
+                                                <i className="ti-pencil"></i>
+                                            </button>
+                                            <button 
+                                                className="delete-btn"
+                                                title="Xóa"
+                                            >
+                                                <i className="ti-trash"></i>
                                             </button>
                                         </>
                                     )}
